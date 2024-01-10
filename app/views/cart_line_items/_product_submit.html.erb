@@ -1,0 +1,69 @@
+<!-- ... (previous HTML code) ... -->
+
+<div class="product-submit">
+  <%= render 'cart_line_items/product_availability', product: product %>
+
+  <div class="horizontal-input-group">
+    <div class="horizontal-input-group__input">
+      <div class="text-input">
+        <%= text_field_tag :quantity, 1, type: :number, min: 1 %>
+      </div>
+    </div>
+    <div class="horizontal-input-group__action">
+      <%= button_tag(
+        t('spree.add_to_cart'),
+        class: 'button-primary',
+        id: 'add-to-cart-button'
+      ) %>
+    </div>
+  </div>
+
+  <!-- ... (previous HTML code) ... -->
+
+  <script>
+    // Pass the Ruby array to JavaScript
+    var supportedZipCodes = <%= raw @matching_stock_locations.to_json %>;
+
+    // Get the Add to Cart button
+    var addToCartButton = document.getElementById('add-to-cart-button');
+
+    // Initially disable the button
+    addToCartButton.disabled = true;
+
+    function checkAvailability() {
+      // Get the entered ZIP code
+      var pinCode = document.getElementById('pinCode').value;
+
+      // Check if the entered ZIP code is in the list of supported ZIP codes
+      var isAvailable = supportedZipCodes.includes(pinCode);
+
+      // Get the message div
+      var messageDiv = document.getElementById('availabilityMessage');
+
+      // Clear the previous message
+      messageDiv.innerHTML = '';
+
+      // Set the message and color based on availability
+      if (isAvailable) {
+        messageDiv.innerHTML = '<p style="color: green;">Product is available for ZIP code ' + pinCode + '</p>';
+        addToCartButton.disabled = false; // Enable the button
+        console.log("Input ZIP code matches one of the stock locations: " + supportedZipCodes.join(', '));
+      } else {
+        messageDiv.innerHTML = '<p style="color: red;">Product is not available for ZIP code ' + pinCode + '</p>';
+        addToCartButton.disabled = true; // Disable the button
+        console.log("Input ZIP code does not match any stock location for the product.");
+      }
+    }
+
+    // Add an event listener to the "Add to Cart" button
+    addToCartButton.addEventListener('click', function() {
+      // Check if the button is disabled (product not available)
+      if (this.disabled) {
+        alert('Please check product availability first.');
+      }
+    });
+  </script>
+
+  <div id="availabilityMessage"></div>
+
+</div>

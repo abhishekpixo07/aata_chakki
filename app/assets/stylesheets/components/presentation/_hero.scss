@@ -1,0 +1,11 @@
+.hero {
+  // background: $color-background-dark;
+  background-image: url("https://aashirvaadchakki.com/cdn/shop/collections/shutterstock_114264646_1_989be061-2619-45ad-9a8a-92b1a74ae22d.png?v=1688559855");
+  color: $color-copy-bright;
+  padding: 10rem 0;
+
+  &__container {
+    @extend %section-spacings;
+    display: flex;
+  }
+}

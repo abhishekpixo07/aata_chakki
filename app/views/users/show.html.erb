@@ -1,0 +1,128 @@
+<style>
+  .modern-profile-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.modern-profile-box h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.account-summary__profile {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.profile-item {
+  width: 30%;
+  background-color: #f5f5f5;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-item h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.profile-item p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1%;
+}
+
+</style>
+<div class="account-summary">
+  <div class="modern-profile-box">
+  <div class="profile-header">
+      <h2>My Profile</h2>
+      <%= link_to I18n.t('spree.edit'), edit_account_path, class: 'edit-button' %>
+    </div>
+  <div class="account-summary__profile">
+    <div class="profile-item">
+      <h3><%= I18n.t('spree.first_name') %></h3>
+      <p><%= @user.first_name %></p>
+    </div>
+
+    <div class="profile-item">
+      <h3><%= I18n.t('spree.last_name') %></h3>
+      <p><%= @user.last_name %></p>
+    </div>
+
+    <div class="profile-item">
+      <h3><%= I18n.t('spree.email') %></h3>
+      <p><%= @user.email %></p>
+    </div>
+  </div>
+</div>
+
+
+
+  <div class="account-summary__orders">
+    <h2><%= I18n.t('spree.my_orders') %></h2>
+    <% if @orders.present? %>
+      <% @orders.each do |order| %>
+        <dl class="account-order">
+          <div class="account-order__detail">
+            <dt><%= I18n.t(:number, scope: 'activerecord.attributes.spree/order') %></dt>
+            <dd><%= link_to order.number, order_url(order) %></dd>
+          </div>
+
+          <div class="account-order__detail">
+            <dt><%= I18n.t('spree.date') %></dt>
+            <dd><%= l order.completed_at.to_date %></dd>
+          </div>
+
+          <div class="account-order__detail">
+            <dt><%= I18n.t('spree.status') %></dt>
+            <dd><%= I18n.t("spree.order_state.#{order.state}").titleize %></dd>
+          </div>
+
+          <div class="account-order__detail">
+            <dt><%= I18n.t('spree.payment_state') %></dt>
+            <dd><%= I18n.t("spree.payment_states.#{order.payment_state}").titleize if order.payment_state %></dd>
+          </div>
+
+          <div class="account-order__detail">
+            <dt><%= I18n.t('spree.shipment_state') %></dt>
+            <dd><%= I18n.t("spree.shipment_states.#{order.shipment_state}").titleize if order.shipment_state %></dd>
+          </div>
+
+          <div class="account-order__detail">
+            <dt><%= I18n.t('spree.total') %></dt>
+            <dd><%= order.display_total %></dd>
+          </div>
+        </dl>
+      <% end %>
+    <% else %>
+      <p><%= I18n.t('spree.you_have_no_orders_yet') %></p>
+    <% end %>
+  </div>
+
+  <%= form_with(url: logout_path, method: Devise.sign_out_via, local: true) do %>
+    <%= button_tag(t("spree.logout"), class: 'button-primary') %>
+  <% end %>
+</div>

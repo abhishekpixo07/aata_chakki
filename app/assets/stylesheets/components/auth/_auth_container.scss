@@ -1,0 +1,14 @@
+.auth-container {
+  margin: 0 auto;
+  margin-top: 2%;
+  max-width: 35rem;
+  padding: 2rem; /* Adjust padding as needed */
+  border: 1px solid #ccc; /* Border color */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow - adjust values as needed */
+
+  > h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0 0 2rem;
+  }
+}

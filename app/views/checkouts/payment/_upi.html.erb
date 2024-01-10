@@ -1,0 +1,225 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select UPI App</title>
+ <style>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    #upiId, button {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #upiId {
+      width: 70%;
+      padding: 8px;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .upi-app-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .upi-app-list-item {
+      width: 48%; /* Adjust the width as needed, considering margin */
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .upi-pay-link {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      align-items: center;
+    }
+
+    .upi-app-logo {
+      margin-right: 10px;
+    }
+
+    .upi-app-logo img {
+      max-width: 40px;
+      max-height: 40px;
+    }
+  </style>
+</head>
+<div class="payment-step" data-controller="checkout-payment">
+  <fieldset class="payment-step__payment">
+    <legend>
+      <%= t('spree.payment_information') %>
+    </legend>
+    <% if @order.covered_by_store_credit? %>
+      <p>Your order is fully covered by store credits, no additional payment method is required.</p>
+    <% else %>
+      <ul class="payment-step__selector">
+        
+
+        <%#@order.available_payment_methods.each.with_index do |payment_method, index| %>
+          <%default = "UPI" %>
+          <%fieldset_name = "upi-1" %>
+
+          <li>
+            <label>
+              <%= radio_button_tag(
+                "order[payments_attributes][][payment_method_id]",
+                1,
+                default,
+                'data-action': 'checkout-payment#paymentSelected',
+                'data-checkout-payment-target': "paymentRadio",
+                'data-fieldset-name': fieldset_name,
+              ) %>
+              <%="UPI Payment" %>
+            </label>
+            <fieldset name="<%#= fieldset_name %>" class="payment-step__details">
+             <div class="container">
+          <h1>Select UPI Payment</h1>
+
+          <label for="upiId">Enter your UPI ID:</label>
+          <input type="text" id="upiId" placeholder="Enter UPI ID">
+          <button onclick="confirmUPIID()">Confirm</button>
+          
+          <hr>
+
+          <ul class="upi-app-list" id="upiAppList">
+            <li class="upi-app-list-item phonepe show">
+              <a href="upi://pay?pa=abhishekkumar264595@oksbi&pn=Abhishek Kumar&mc=10&tid=ABHIPIXO260798&tr=1001&tn=hy%20this%20is%20demo&aid=10&cu=INR" class="upi-pay-link">
+                <div class="upi-app-logo">
+                  <img src="<%= image_path('phonepe-logo-icon.webp') %>" alt="PhonePe">
+                </div>
+                <span>PhonePe</span>
+              </a>
+            </li>
+            <li class="upi-app-list-item gpay show">
+              <a href="upi://pay?pa=abhishekkumar264595@oksbi&pn=Abhishek%20Kumar&mc=10&tid=ABHIPIXO260798&tr=1001&tn=hy%20this%20is%20demo&tnp=PIXO&aid=10&cu=INR" class="upi-pay-link">
+                <div class="upi-app-logo">
+                  <img src="<%= image_path('gpay.png') %>" alt="Google Pay">
+                </div>
+                <span>Google Pay</span>
+              </a>
+            </li>
+            <li class="upi-app-list-item gpay show">
+              <a href="upi://pay?pa=abhishekkumar264595@oksbi&pn=Abhishek%20Kumar&mc=10&tid=ABHIPIXO260798&tr=1001&tn=hy%20this%20is%20demo&tnp=PIXO&aid=10&cu=INR" class="upi-pay-link">
+                <div class="upi-app-logo">
+                  <img src="<%= image_path('paytm.png') %>" alt="Paytm Pay">
+                </div>
+                <span>Paytm</span>
+              </a>
+            </li>
+            <li class="upi-app-list-item gpay show">
+              <a href="upi://pay?pa=abhishekkumar264595@oksbi&pn=Abhishek%20Kumar&mc=10&tid=ABHIPIXO260798&tr=1001&tn=hy%20this%20is%20demo&tnp=PIXO&aid=10&cu=INR" class="upi-pay-link">
+                <div class="upi-app-logo">
+                  <img src="<%= image_path('bhim.png') %>" alt="bhim Pay">
+                </div>
+                <span>BHIM</span>
+              </a>
+            </li>
+            <!-- Add more UPI apps as needed -->
+          </ul>
+        </div>
+            </fieldset>
+          </li>
+        <%# end %>
+      </ul>
+    <% end %>
+  </fieldset>
+
+  <%= button_tag(
+    I18n.t("spree.save_and_continue"),
+    class: 'button-primary',
+    name: :commit
+  ) %>
+</div>
+
+<script>
+  Solidus.disableSaveOnClick();
+</script>
+<script src="https://pay.google.com/gp/p/js/pay.js"></script>
+
+<script>
+  function showPaymentSheet(upiId) {
+    const details = {
+      total: {
+        label: 'Purchase in Merchant',
+        amount: {
+          currency: 'INR', // or your desired currency code
+          value: '10.00' // or your desired amount
+        }
+      },
+      displayItems: [
+        {
+          label: 'GST',
+          amount: {
+            currency: 'INR', // or your desired currency code
+            value: '16.90' // or your desired GST amount
+          }
+        }
+        // Add more display items if needed
+      ]
+    };
+
+    const supportedInstruments = [
+      {
+        supportedMethods: ['https://tez.google.com/pay'],
+        data: {
+          pa: '9557545452@ybl',
+          tn: 'Purchase in Merchant',
+          mc: '1234',
+          tr: '1234ABCD',
+          url: 'http://url/of/the/order/in/your/website',
+          invoiceNo: 'BillRef123',
+          invoiceDate: '2019-06-11T13:21:50+05:30',
+          gstIn: '29ABCDE1234F2Z5',
+          aid: 10
+        },
+      },
+    ];
+
+    const paymentRequest = new PaymentRequest(supportedInstruments, details);
+
+    paymentRequest.show()
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  function confirmUPIID() {
+    const upiIdInput = document.getElementById('upiId');
+    const upiId = upiIdInput.value;
+
+    if (upiId) {
+      showPaymentSheet(upiId);
+    } else {
+      console.error('Please enter a valid UPI ID');
+    }
+  }
+</script>
+
