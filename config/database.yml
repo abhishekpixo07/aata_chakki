@@ -89,6 +89,6 @@ test:
 #
 production:
   <<: *default
-  database: my_store_production
-  username: my_store
-  password: <%= ENV["MY_STORE_DATABASE_PASSWORD"] %>
+  database: grind_pound
+  username: grind_pound_user
+  password: kZFvd7J6XHFmH1IgnzzbYTteKueUNJ23
