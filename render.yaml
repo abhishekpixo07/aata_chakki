@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: Grind & Pound
+    env: production
+    buildCommand: bundle exec rails assets:precompile
+
