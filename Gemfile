@@ -100,7 +100,7 @@ group :development, :test do
   # gem "rubocop-rspec", "~> 2.0"
 end
 
-gem "solidus_stripe", "~> 5.a"
+gem 'solidus_stripe', '~> 5.0.2'
 
 # gem "solidus_core", "~> 4.2"
 # gem "solidus_backend", "~> 4.2"
