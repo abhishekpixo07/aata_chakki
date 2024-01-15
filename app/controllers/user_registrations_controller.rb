@@ -22,8 +22,6 @@ class UserRegistrationsController < Devise::RegistrationsController
 
   # Action for confirming OTP
   def confirm_otp
-    p "-00000000-"
-    p params[:otp]
     otp_string = params[:otp].join('') if params[:otp].is_a?(Array)
     user = Spree::User.find(params[:id])
     if user && user.otp == otp_string

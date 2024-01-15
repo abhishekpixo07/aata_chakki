@@ -1,20 +1,51 @@
-<li
-  class="product-card"
-  itemscope
-  itemtype="http://schema.org/Product"
-  id="product_<%= product.id %>"
->
+<style>
+  .product-card {
+    list-style: none;
+    margin: 10px; /* Adjust margin as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Add border for separation */
+    border-radius: 10px; /* Adjust the radius value as needed */
+  }
+
+  .custom-image {
+    height: 150px; /* Adjust the height value as needed */
+    width: 50px;
+    border-radius: 10px; /* Adjust the radius value as needed */
+  }
+
+  .product-card article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-card_image {
+    margin-bottom: 10px; /* Adjust margin as needed */
+  }
+
+  .product-card_header {
+    text-align: center;
+  }
+
+  .product-card_price {
+    text-align: center;
+  }
+</style>
+
+<li class="product-card" itemscope itemtype="http://schema.org/Product" id="product_<%= product.id %>">
   <article>
     <section class="product-card_image">
       <%= link_to product_path(product), itemprop: 'url' do %>
-        <%= render(ImageComponent.new(image: main_image, size: :small, itemprop: "image")) %>
+        <%= render(ImageComponent.new(image: main_image, size: :small, itemprop: "image", class: "custom-image")) %>
       <% end %>
     </section>
+
     <header class="product-card_header">
       <h2>
         <%= link_to truncate(product.name, length: 50), product_path(product), class: 'info', itemprop: "name", title: product.name %>
       </h2>
     </header>
+
     <section class="product-card_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
       <% if display_price %>
         <span class="price selling" itemprop="price" content="<%= display_price.to_d %>">
