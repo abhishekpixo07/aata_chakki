@@ -89,6 +89,8 @@ test:
 #
 production:
   <<: *default
+  host: 'dpg-cmig44fqd2ns7382vr00-a'
+  port: 5432
   database: grind_pound
   username: grind_pound_user
   password: kZFvd7J6XHFmH1IgnzzbYTteKueUNJ23
