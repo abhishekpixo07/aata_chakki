@@ -24,7 +24,8 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
-  config.secret_key_base = Rails.application.credentials.dig(:production, :secret_key_base)
+  config.secret_key_base = "29173ebb39478bb2b06ccc7db1b8319e096d9506f9e5408b226c3cfb92fc56d03e4d49a19603b1149cf2e89ba2fd87181f27f8450966fd10e6e6f26114e3a80f"
+
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
