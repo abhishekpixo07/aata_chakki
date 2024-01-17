@@ -1,22 +1,165 @@
-<div class="top-bar" data-controller="top-bar">
-  <figure class="logo">
-    <%= link_to image_tag('PL-Black.png', alt: 'Description of the image'), root_path %>
-    <%#= link_to image_tag(Spree::Config[:logo]), root_path %>
-  </figure>
 
-  <div class="top-bar__search">
-    <%= render 'shared/search/search_bar', taxons: taxons, taxon: taxon %>
-  </div>
 
-  <% if spree_current_user %>
-    <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
-  <% else %>
-    <%= link_to "Signup", signup_path, class: 'auth-link' %>
-  <% end %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <style>
+      body, h1, h2, h3, p, ul, ol, li, figure, figcaption, blockquote {
+      margin: 0;
+      padding: 0;
+    }
 
-  <div class="cart-link" id="link-to-cart" data-top-bar-target="cartLink">
-    <noscript>
-      <%= link_to t('spree.cart'), cart_path %>
-    </noscript>
-  </div>
-</div>
+    .top-header {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .custom-header nav {
+      width: 100%;
+      max-width: 2500px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-header a {
+      color: #343a40;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .custom-header a:hover {
+      color: #007bff;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      color: #495057;
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: #007bff;
+    }
+
+    .search-button {
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-button:hover {
+      background-color: #0056b3;
+    }
+
+    .logo img {
+      width: 140px;
+      height: 35px;
+    }
+
+    .imgicons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .loginText {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .loginText:hover {
+      color: #007bff;
+    }
+
+    nav a {
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin: 0 15px;
+      text-transform: uppercase;
+    }
+
+    .search-bar {
+      border-bottom: 1px solid #ced4da;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="custom-header">
+    <nav  class="top-header">
+      <div class="logo">
+        <h1 class="animation infinite heartBeat">
+          <%= link_to image_tag('PL-Black.png', alt: 'Description of the image'), root_path %>
+        </h1>
+      </div>
+
+      <a href="" target="_blank">Home</a>
+      <a href="" target="_blank">Shop</a>
+      <a href="" target="_blank">About</a>
+      <a href="" target="_blank">Contact</a>
+
+      <div class="search-bar">
+        <%= render 'shared/search/search_bar', taxons: taxons, taxon: taxon %>
+      </div>
+
+      <div class="imgicons">
+        <a>
+          <div class="loginText">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" color="gray">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+            </svg>
+            <span> 
+              <% if spree_current_user %>
+                <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
+              <% else %>
+                <%= link_to "Signup", signup_path, class: 'auth-link' %>
+              <% end %>
+            </span>
+          </div>
+        </a>      
+        <div class="top-bar" data-controller="top-bar">
+          <div class="cart-link" id="link-to-cart" data-top-bar-target="cartLink">
+            <noscript>
+              <%= link_to t('spree.cart'), cart_path %>
+            </noscript>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+</body>
+</html>
