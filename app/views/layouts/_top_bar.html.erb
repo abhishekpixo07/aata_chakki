@@ -1,155 +1,184 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <style>
-      body, h1, h2, h3, p, ul, ol, li, figure, figcaption, blockquote {
+    body,
+    h1,
+    h2,
+    h3,
+    p,
+    ul,
+    ol,
+    li,
+    figure,
+    figcaption,
+    blockquote {
       margin: 0;
       padding: 0;
     }
-
     .top-header {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: 0;
-}
-
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+      border: 0;
+    }
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f8f9fa;
+      background-color: #F8F9FA;
     }
-
+    .custom-header {
+      width: 99vw;
+      margin-left: -13px;
+    }
     .custom-header nav {
       width: 100%;
-      max-width: 2500px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
       background-color: #fff;
-      border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
     .custom-header a {
-      color: #343a40;
+      color: #20303C;
       text-decoration: none;
       transition: color 0.3s ease;
     }
-
     .custom-header a:hover {
-      color: #007bff;
+      color: #3C7260;
     }
-
     .search-bar {
       display: flex;
       align-items: center;
     }
-
     .search-input {
       color: #495057;
       padding: 10px;
       margin-right: 10px;
-      border: 1px solid #ced4da;
+      border: 1px solid #CED4DA;
       border-radius: 5px;
       font-size: 14px;
       transition: border-color 0.3s ease;
     }
-
     .search-input:focus {
-      border-color: #007bff;
+      border-color: #007BFF;
     }
-
     .search-button {
       padding: 10px;
-      background-color: #007bff;
+      background-color: #007BFF;
       color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
     .search-button:hover {
-      background-color: #0056b3;
+      background-color: #0056B3;
     }
-
     .logo img {
-      width: 140px;
-      height: 35px;
+      width: 135px;
+      height: 38px;
     }
-
     .imgicons {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .loginText {
       display: flex;
       align-items: center;
       gap: 5px;
     }
-
     .loginText:hover {
-      color: #007bff;
+      color: #007BFF;
     }
-
     nav a {
       font-size: 16px;
       font-weight: 500;
       letter-spacing: 1px;
-      margin: 0 15px;
+      margin: 0 14px;
       text-transform: uppercase;
     }
-
-    .search-bar {
-      border-bottom: 1px solid #ced4da;
+    a.auth-link {
+      color: #20303C;
+      margin: 0 0 7px;
     }
-
+    @media only screen and (min-width: 200px) and (max-width: 550px) {
+      .custom-header nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .custom-header a {
+        margin: 10px 0;
+      }
+    }
+    @media only screen and (min-width: 600px) and (max-width: 850px) {
+      .custom-header {
+        width: auto;
+      }
+      .custom-header nav {
+        justify-content: flex-start
+      }
+    }
+    @media only screen and (min-width: 900px) and (max-width: 1100px) {
+      .custom-header {
+        width: auto;
+      }
+      .custom-header nav {
+        justify-content: flex-start
+      }
+    }
+    @media screen and (min-width: 1200px) {
+      .custom-header {
+        width: 100vw;
+        margin-left: -69px;
+      }
+    }
   </style>
 </head>
 <body>
-
   <header class="custom-header">
-    <nav  class="top-header">
+    <nav class="top-header">
       <div class="logo">
         <h1 class="animation infinite heartBeat">
-          <%= link_to image_tag('PL-Black.png', alt: 'Description of the image'), root_path %>
+          <%= link_to image_tag('PL-Black.png', alt: 'Description of the image' ), root_path %>
         </h1>
       </div>
-
       <a href="" target="_blank">Home</a>
       <a href="" target="_blank">Shop</a>
       <a href="" target="_blank">About</a>
       <a href="" target="_blank">Contact</a>
-
       <div class="search-bar">
-        <%= render 'shared/search/search_bar', taxons: taxons, taxon: taxon %>
+        <%= render 'shared/search/search_bar' , taxons: taxons, taxon: taxon %>
       </div>
-
       <div class="imgicons">
         <a>
           <div class="loginText">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" color="gray">
+            <%# <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+              class="bi bi-person-circle" viewBox="0 0 16 16" color="gray">
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-            </svg>
-            <span> 
-              <% if spree_current_user %>
-                <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
-              <% else %>
-                <%= link_to "Signup", signup_path, class: 'auth-link' %>
-              <% end %>
-            </span>
+              <path fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+              </svg> %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person"
+                viewBox="0 0 16 16">
+                <path
+                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+              </svg>
+              <span class="user_singup_text">
+                <% if spree_current_user %>
+                  <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
+                    <% else %>
+                      <%= link_to "Signup" , signup_path, class: 'auth-link' %>
+                        <% end %>
+              </span>
           </div>
-        </a>      
+        </a>
         <div class="top-bar" data-controller="top-bar">
           <div class="cart-link" id="link-to-cart" data-top-bar-target="cartLink">
             <noscript>
@@ -160,6 +189,5 @@
       </div>
     </nav>
   </header>
-
 </body>
 </html>
