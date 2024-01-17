@@ -1,27 +1,203 @@
-<footer class="footer">
-  <p>
-    <%= t 'spree.powered_by' %> <%= link_to 'Solidus', 'http://solidus.io/' %>
-  </p>
+<!DOCTYPE html>
+<html lang="en">
 
-  <%
-    available_locales = current_store.available_locales.map do |locale|
-      [
-        I18n.t('spree.i18n.this_file_language',
-        locale: locale,
-        default: locale.to_s,
-        fallback: false), locale
-      ]
-    end.sort
-  %>
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+ <style>
+   /* Footer Styles */
+   .footer {
+    background-image: linear-gradient(to right, #2c3e50, #4ca1af);
+     padding: 50px 0;
+     color: #ecf0f1;
+   }
 
-  <% if available_locales.many? %>
-    <div class="locale-selector">
-      <%= form_tag select_locale_path do %>
-        <div class="locale-selector__select-input select-input">
-          <%= label_tag :switch_to_locale, "#{t('spree.i18n.language')}:" %>
-          <%= select_tag(:switch_to_locale, options_for_select(available_locales, I18n.locale)) %>
+   .container {
+     max-width: 1170px;
+     margin: auto;
+   }
+
+   .row {
+     display: flex;
+     flex-wrap: wrap;
+   }
+
+   .footer-col {
+     width: 25%;
+     box-sizing: border-box;
+     padding: 0 15px;
+     margin-bottom: 30px;
+   }
+
+   .footer-col h4 {
+     font-size: 20px;
+     color: #ffffff;
+     text-transform: uppercase;
+     margin-bottom: 20px;
+     font-weight: 700;
+   }
+
+   .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0; /* Remove default margin */
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+      text-align: left; /* Align text to the left */
+      margin-left: 20%;
+    }
+
+    .footer-col ul li a {
+      font-size: 16px;
+      text-transform: capitalize;
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: 300;
+      display: block;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col ul li a:hover {
+      color: #3498db;
+    }
+
+   .row .social-links a {
+     display: inline-block;
+     height: 40px;
+     width: 40px;
+     background-color: #3498db;
+     margin-right: 10px;
+     text-align: center;
+     line-height: 40px;
+     border-radius: 50%;
+     color: #ffffff;
+     transition: all 0.5s ease;
+   }
+
+   .row .social-links a:hover {
+     background-color: #ffffff;
+     color: #2c3e50;
+   }
+
+   .row p {
+     color: #ecf0f1;
+     font-size: 14px;
+     margin-top: 20px;
+   }
+
+   .form-label {
+     color: #ecf0f1;
+     margin-bottom: 5px;
+     text-align: left;
+     display: block;
+   }
+
+   .form-control {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 15px;
+     box-sizing: border-box;
+     border: 1px solid #34495e;
+     border-radius: 4px;
+     font-size: 14px;
+     background-color: #2c3e50;
+     color: #ecf0f1;
+   }
+
+   .btn_get {
+     width: 100%;
+     background-color: #3498db;
+     color: #ffffff;
+     padding: 15px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 16px;
+     transition: background-color 0.3s ease;
+   }
+
+   .btn_get:hover {
+     background-color: #2980b9;
+   }
+
+   .underline-text {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+   }
+
+   /* Responsive Styles */
+   @media (max-width: 767px) {
+     .footer-col {
+       width: 50%;
+     }
+   }
+
+   @media (max-width: 574px) {
+     .footer-col {
+       width: 100%;
+     }
+   }
+
+ </style>
+</head>
+
+<body>
+ <!-- footer -->
+ <footer class="footer">
+  <div class="container">
+   <div class="row">
+        <div class="footer-col">
+          <h4>STORE</h4>
+          <ul>
+            <li><a href="#">Shop All</a></li>
+            <li><a href="#">Shipping & Returns </a></li>
+            <li><a href="#">Store Policy</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
         </div>
-      <% end %>
+        <div class="footer-col">
+          <h4>Address</h4>
+          <ul>
+            <li><a href="#">500 Terry Francine Street</a></li>
+            <li><a href="#">San Francisco, CA 94158</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>OPENING HOURS</h4>
+          <ul>
+            <li><a href="#">Mon - Fri: 7am - 10pm</a></li>
+            <li><a href="#">Saturday: 8am - 10pm</a></li>
+            <li><a href="#">Sunday: 8am - 11pm</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>GET IT FRESH</h4>
+          <form>
+            <label for="email" class="form-label">Email:</label>
+            <input type="text" id="email" name="EMAIL" class="form-control memail">
+            <button class="btn btn_get btn_get_two" type="submit">Subscribe Now</button>
+          </form>
+        </div>
+
+      </div>
+    <div class="row underline-text">
+      <p>© 2035 by Fresh Market. Powered and secured by Grind & Pound</p>
+
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
     </div>
-  <% end %>
-</footer>
+  </div>
+ </footer>
+
+</body>
+
+</html>
