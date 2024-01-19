@@ -5,14 +5,11 @@
       box-sizing: border-box;
       font-family: sans-serif; /* Using a generic sans-serif font */
     }
-
     :root {
-      --main-blue: #71b7e6;
+      --main-blue: #71B7E6;
       --main-grey: #ccc;
     }
-
-   
-    .container {
+    .edit_container {
       max-width: 700px;
       background: #fff;
       padding: 25px 30px;
@@ -22,16 +19,14 @@
       margin-left: 25%;
       box-shadow: 0 0 10px rgb(0 0 0 / 10%);
     }
-
-    .container .title {
+    .edit_container .title {
       text-align: center;
       font-size: 25px;
       font-weight: 500;
       position: relative;
       margin-top: 21px;
     }
-
-    .container form .user__details {
+    .edit_container form .user__details {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -39,18 +34,15 @@
       width: 50%;
     margin-left: 160px;
     }
-
     .user__details .input__box {
       margin-bottom: 21px;
-      width: 100%; /* Set width to 100% to make them appear one below the other */
+      width: 100%;
     }
-
     .user__details .input__box .details {
       font-weight: 500;
       margin-bottom: 5px;
       display: block;
     }
-
     .user__details .input__box input {
       height: 45px;
       width: 100%;
@@ -62,20 +54,20 @@
       border-bottom-width: 2px;
       transition: all 0.3s ease;
     }
-
     .user__details .input__box input:focus,
     .user__details .input__box input:valid {
       border-color: var(--main-blue);
     }
-
-    .button {
+    .edit_container button {
       margin-top: 20px;
       margin-left: 25%;
+      background-color: #22674F;
+      color: white;
+      width: 20%;
     }
-
-    .button input {
-            margin-left: 157px;
-    padding: 10px;
+    .edit_container button input {
+      margin-left: 157px;
+      padding: 10px;
       width: 25%;
       outline: none;
       color: #fff;
@@ -86,16 +78,13 @@
       background: blue;
       cursor: pointer;
     }
-
-    .button input:hover {
-      background: #1e57a1;
+    .edit_container .button input:hover {
+      background: #8CB5A8;
     }
   </style>
 <article id="edit-account">
-  
-
   <%= render 'shared/error_messages', target: @user %>
-  <div class="container">
+  <div class="edit_container">
     <div class="title">Editing User</div>
     <%= form_for @user do |f| %>
       <div class="user__details">
@@ -104,26 +93,21 @@
           <%= f.text_field :first_name, required: true %>
         </div>
       </div>
-
       <div class="user__details">
           <div class="input__box">
           <%= f.label :last_name, "#{t("spree.last_name")}:*".html_safe %>
           <%= f.text_field :last_name, required: true %>
         </div>
       </div>
-
       <div class="user__details">
           <div class="input__box">
           <%= f.label :email, "#{t("spree.email")}:*".html_safe %>
           <%= f.email_field :email, required: true %>
         </div>
       </div>
-
       <div class="button">
         <%= f.button t("spree.update"), name: :commit, class: 'button-primary button-primary' %>
       </div>
     <% end %>
   </div>
 </article>
-
-

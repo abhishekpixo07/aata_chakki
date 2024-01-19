@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Add your Razorpay key -->
+  <script>
+    var razorpayKey = 'rzp_test_Ycedid9q0giBpS'; // Replace with your actual Razorpay key
+  </script>
+ <style>
+ body {
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   background-color: #f4f4f4;
+   margin: 0;
+   padding: 0;
+ }
+
+ .card_main_div {
+   font-size: 24px;
+   text-align: center;
+   z-index: 1;
+   padding: 20px;
+   background-color: #034730;
+   color: #fff;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }
+
+ .sub_container {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   gap: 20px;
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 20px;
+ }
+
+ .sub_offers {
+   background: #fff;
+   padding: 20px;
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   transition: transform 0.3s ease-in-out;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .sub_offers:hover {
+   transform: scale(1.05);
+   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+ }
+
+ .sub_offers img {
+   width: 214px;
+   height: 77px;
+   object-fit: cover;
+   /* border-radius: 50%; */
+   margin-bottom: 15px;
+   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+ }
+
+ .sub_offers h2 {
+   font-size: 20px;
+   font-weight: bold;
+   margin-bottom: 10px;
+ }
+
+ .sub_offers h3 {
+   color: #034730;
+   margin-bottom: 10px;
+ }
+
+ .sub_offers p {
+   margin: 10px 0;
+   font-size: 16px;
+   line-height: 1.5;
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+
+ .sub_offers button {
+   font-size: 16px;
+   font-weight: 500;
+   background: #034730;
+   color: #fff;
+   margin-top: 15px;
+   padding: 10px 20px;
+   border: 0;
+   border-radius: 4px;
+   cursor: pointer;
+   transition: background-color 0.3s ease;
+ }
+
+ .sub_offers button:hover {
+   background-color: #8CB5A8;
+ }
+ </style>
+</head>
+<body>
+ <div class="card_main_div">
+ <h2>Explore Our Subscription Plans</h2>
+ </div>
+
+ <div class="sub_container">
+ <% @subscription_plans.each do |subscription_plan| %>
+   <div class="sub_offers">
+      <% if subscription_plan.image.present? %>
+        <img src="<%#= subscription_plan.image.url %>" alt="Subscription Image" class="subscription-image">
+      <% else %>
+        <%= link_to(image_tag('PL-Black.png', alt: 'Description of the image', class: 'subscription-image')) %>
+      <% end %>
+      <h2>  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="18" fill="currentColor" class="bi bi-tags"
+            viewBox="0 0 16 16">
+            <path
+              d="M3 2v4.586l7 7L14.586 9l-7-7zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586z" />
+            <path
+              d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1z" />
+          </svg><%= subscription_plan.title %></h2>
+      <h3 class="price">₹ <%= subscription_plan.amount %></h3>
+      <p><%= subscription_plan.description %></p>
+      <button class="razorpay-button" data-amount="<%= subscription_plan.amount * 100 %>">
+          Subscribe Now
+      </button>
+   </div>
+ <% end %>
+ </div>
+</body>
+</html>
+<!-- Razorpay payment script -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var buttons = document.querySelectorAll('.razorpay-button');
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var amount = this.getAttribute('data-amount');
+
+        var options = {
+          key: razorpayKey,
+          amount: amount,
+          currency: 'INR',
+          name: 'Grind & Pound',
+          description: 'Subscription Payment',
+          image: 'URL to your company logo',
+          handler: function (response) {
+            // Make an AJAX request to your server to create the subscription
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/create_subscription', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            // Include the CSRF token in the request headers
+            var csrfToken = document.querySelector("meta[name=csrf-token]").content;
+            xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  var jsonResponse = JSON.parse(xhr.responseText);
+                  if (jsonResponse.status === 'success') {
+                    console.log('Subscription created successfully. Subscription ID:', jsonResponse.subscription_id);
+                    // Handle other success actions as needed
+                  } else {
+                    console.error('Failed to create subscription. Error:', jsonResponse.message);
+                    // Handle error
+                  }
+                } else {
+                  console.error('Failed to create subscription. Server returned status:', xhr.status);
+                  // Handle error
+                }
+              }
+            };
+
+            var data = JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, amount: amount });
+            xhr.send(data);
+
+            alert('Payment successful!');
+          },
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+      });
+    });
+  });
+</script>

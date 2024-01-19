@@ -108,6 +108,16 @@
       color: #20303C;
       margin: 0 0 7px;
     }
+     .custom-header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000; /* Adjust the z-index as needed */
+    }
+    /* Add this style to create space at the top to prevent content from being hidden behind the fixed header */
+    body {
+      padding-top: 110px; /* Adjust the value based on your header height */
+    }
     @media only screen and (min-width: 200px) and (max-width: 550px) {
       .custom-header nav {
         flex-direction: column;
@@ -139,6 +149,37 @@
         margin-left: -69px;
       }
     }
+     .profile_dropbtn {
+      background-color: white;
+      color: gray;
+       position: relative;
+      display: inline-block;
+      border:none;
+    }
+    .profile_dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #F1F1F1;
+      min-width: 160px;
+      overflow: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+    .profile_dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .profile_drop_icons {
+      margin: 0 13px -7px
+    }
+    .profile_dropdown a:hover {
+      background-color: #ddd;
+    }
+    .show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -159,24 +200,43 @@
       <div class="imgicons">
         <a>
           <div class="loginText">
-            <%# <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-              class="bi bi-person-circle" viewBox="0 0 16 16" color="gray">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-              <path fill-rule="evenodd"
-                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-              </svg> %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person"
-                viewBox="0 0 16 16">
-                <path
-                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-              </svg>
-              <span class="user_singup_text">
-                <% if spree_current_user %>
-                  <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
-                    <% else %>
-                      <%= link_to "Signup" , signup_path, class: 'auth-link' %>
-                        <% end %>
-              </span>
+            <span class="user_singup_text">
+              <% if spree_current_user %>
+                  <div class="profile_dropdown">
+                    <button onclick="myFunction()" class="profile_dropbtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                          class="bi bi-person" viewBox="0 0 16 16">
+                          <path
+                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                        </svg>
+                    </button>
+                    <div id="myDropdown" class="profile_dropdown-content">
+                      <a href="account"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                          class="bi bi-person profile_drop_icons" viewBox="0 0 16 16">
+                          <path
+                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                        </svg>Profile</a>
+                      <a href="#" onclick="logoutForm.submit()" class="logout_link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                          class="bi bi-box-arrow-left profile_drop_icons" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd"
+                            d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                          <path fill-rule="evenodd"
+                            d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                        </svg>
+                        Logout
+                      </a>
+
+                      <%= form_with(url: logout_path, method: :delete, local: true, id: 'logoutForm') do %>
+                        <!-- Form contents (if any) -->
+                      <% end %>
+                    </div>
+                  </div>
+                <%= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
+                  <% else %>
+                    <%= link_to "Signup" , signup_path, class: 'auth-link' %>
+                      <% end %>
+            </span>
           </div>
         </a>
         <div class="top-bar" data-controller="top-bar">
@@ -189,5 +249,23 @@
       </div>
     </nav>
   </header>
+   <script>
+      function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      }
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          var i;
+          for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
+    </script>
 </body>
 </html>
