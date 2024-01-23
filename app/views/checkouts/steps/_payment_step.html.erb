@@ -25,9 +25,10 @@
               ) %>
               <%= t(payment_method.name, scope: 'spree.payment_methods', default: payment_method.name) %>
             </label>
+           
             <fieldset name="<%= fieldset_name %>" class="payment-step__details">
               <%= render(
-                "checkouts/existing_payment/#{payment_method.partial_name}",
+                "checkouts/payment/upi",
                 wallet_payment_source: wallet_payment_source,
               ) %>
             </fieldset>
@@ -52,7 +53,7 @@
             </label>
             <fieldset name="<%= fieldset_name %>" class="payment-step__details">
               <%= render(
-                "checkouts/payment/#{payment_method.partial_name}",
+                "checkouts/payment/upi",
                 payment_method: payment_method,
               ) %>
             </fieldset>

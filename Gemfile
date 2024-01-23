@@ -71,8 +71,8 @@ group :test do
 
 end
 gem "solidus", "~> 4.2"
-gem 'razorpay', '2.1.0'
-
+gem 'razorpay', '~> 3.2.1'
+gem 'solidus_subscriptions', '~> 2.0', '>= 2.0.2'
 gem "solidus_auth_devise", "~> 2.5"
 gem "responders"
 gem "canonical-rails"

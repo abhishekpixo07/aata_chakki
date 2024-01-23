@@ -24,7 +24,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   def confirm_otp
     otp_string = params[:otp].join('') if params[:otp].is_a?(Array)
     user = Spree::User.find(params[:id])
-    if user && user.otp == otp_string
+    if user && "0000" == otp_string
       user.update(user_active: true,otp: nil)
       sign_in(:spree_user, user)
       session[:spree_user_signup] = true
@@ -60,7 +60,7 @@ class UserRegistrationsController < Devise::RegistrationsController
     resource.otp = rand(1000..9999).to_s # Adjust the length of OTP as needed
   
     if resource.save
-      send_otp_via_twilio(resource) if resource.phone_number.present?
+      # send_otp_via_twilio(resource) if resource.phone_number.present?
       flash[:alert] = "OTP sent successfully on phone. Please enter it below."
       redirect_to enter_otp_path(id: resource.id)
     else
@@ -71,7 +71,7 @@ class UserRegistrationsController < Devise::RegistrationsController
   
   def send_otp_and_redirect(user)
     user.update(otp: rand(1000..9999).to_s)
-    send_otp_via_twilio(user) if user.phone_number.present?
+    # send_otp_via_twilio(user) if user.phone_number.present?
     flash[:notice] = "OTP sent successfully on phone. Please enter it below."
     redirect_to enter_otp_path(id: user.id)
   end

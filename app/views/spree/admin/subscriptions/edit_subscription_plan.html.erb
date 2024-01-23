@@ -1,0 +1,4 @@
+<!-- app/views/spree/admin/subscriptions/edit.html.erb -->
+<%= form_for @subscription_plan, url: new_admin_subscription_path(@subscription_plan) do |f| %>
+  <%= render 'form_plan', f: f %>
+<% end %>

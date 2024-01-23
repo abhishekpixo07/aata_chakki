@@ -7,6 +7,47 @@
   # Classes
   class_names = classes.push(base_class).join(" ")
 %>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+        input {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            outline: none;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        input:focus {
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+        }
+
+        ::placeholder {
+            color: #ccc;
+        }
+
+        button {
+            /* margin-top: 10px; */
+            padding: 10px 20px;
+            background-color: #3c76f0;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #1565C0;
+        }
+    </style>
+</head>
 
 <label for="pinCode" style="margin-right: 10px;">Check Pin Code Availability:</label>
 <div style="display: flex; align-items: center;">

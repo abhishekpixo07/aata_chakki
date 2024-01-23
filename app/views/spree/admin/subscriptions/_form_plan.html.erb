@@ -1,0 +1,42 @@
+<!-- app/views/spree/admin/subscriptions/_form.html.erb -->
+<style>
+    .subscription-plan-form-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+</style>
+<!-- app/views/spree/admin/subscriptions/_form.html.erb -->
+<% admin_breadcrumb(plural_resource_name(SolidusSubscriptions::Subscription)) %>
+
+<div class="subscription-plan-form-container">
+  <fieldset class="no-border-bottom">
+    <legend>Subscription Plan</legend>
+
+    <div class="field">
+      <%= f.label :title, 'Title' %>
+      <%= f.text_field :title, class: 'form-control', required: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description, 'Description' %>
+      <%= f.text_area :description, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :image, 'Image' %>
+      <%= f.file_field :image, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :amount, 'Amount' %>
+      <%= f.number_field :amount, class: 'form-control' %>
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+</div>

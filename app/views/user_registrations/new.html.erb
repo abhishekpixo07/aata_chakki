@@ -1,57 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      /* background-color: #f4f4f4; */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+  <style>
+   
+
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      background-color: #fff;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .header-container {
       text-align: center;
-      background-color: #FFA500;
+      background-color: #2AAA8A;
       color: #fff;
       padding: 20px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
       margin: 0;
+      font-size: 1.5em;
+    }
+
+    .auth-form {
+      /* padding: 20px; */
+    }
+
+    .auth-form__input-wrapper {
+      margin-bottom: 10px;
+    }
+
+    .phone-number-input {
+      position: relative;
+    }
+
+    .intl-tel-input {
+      width: 106%;
+      padding: 15px;
+      font-size: 1.2em;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+
+    .button-primary {
+      background-color: #2AAA8A;
+      color: #fff;
+      border: none;
+      /* padding: 15px; */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+
+    .button-primary:hover {
+      background-color: #097969;
     }
   </style>
 </head>
+<body>
 
 <article class="auth-container" id="new-customer">
-<div class="header-container">
-    <h1><%= "Login/Signup" %></h1>
+  <div class="header-container">
+    <h1>Login/Signup</h1>
   </div>
   <%= render 'shared/error_messages', target: resource %>
 
   <%= form_for resource, as: :spree_user, url: registration_path(resource), html: { class: "auth-form" } do |f| %>
-    <%# <div class="auth-form__input-wrapper">
-      <div class="text-input">
-        <%= f.label :email, "#{t("spree.email")}:" %>
-        <%#= f.email_field :email, placeholder: 'name@example.com' %>
-      <%# </div> %>
-    <%# </div> %>
-
     <div class="auth-form__input-wrapper">
-        <%= f.label :phone_number %>
-        <div class="phone-number-input"> <!-- Adjust the width as needed -->
-          <%= f.hidden_field :phone_country_code, id: 'phone_country_code' %>
-          <%= f.text_field :phone_number, placeholder: 'Enter Your Mobile Number', required: true, class: 'phone-number intl-tel-input', style: 'width: 100%;' %>
-        </div>
+      <%= f.label :phone_number %>
+      <div class="phone-number-input">
+        <%= f.hidden_field :phone_country_code, id: 'phone_country_code' %>
+        <%= f.text_field :phone_number, placeholder: 'Enter Your Mobile Number', required: true, class: 'phone-number intl-tel-input' %>
+      </div>
     </div>
 
     <div class="auth-form__input-wrapper">
-      <%= f.button "Send OTP", name: :commit, class: 'button-primary button-primary--full-width' %>
+      <%= f.button "Send OTP", name: :commit, class: 'button-primary' %>
     </div>
-
-    <%#= I18n.t("spree.or") %> <%#= link_to I18n.t("spree.login_as_existing"), login_path %>
   <% end %>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const phoneNumberField = document.querySelector(".phone-number");
@@ -65,22 +104,18 @@
         formatOnDisplay: false,
       });
 
-      // Listen for changes to the input field
       phoneNumberField.addEventListener('countrychange', function() {
-        // Get the selected country data
         let countryData = iti.getSelectedCountryData();
-        // Set the value of the phoneCountryCodeField to the country code
         phoneCountryCodeField.value = countryData.dialCode;
       });
 
-      // Listen for the form's submit event
       form.addEventListener('submit', function(event) {
-        // Get the selected country data
         let countryData = iti.getSelectedCountryData();
-        // Set the value of the phoneCountryCodeField to the country code
         phoneCountryCodeField.value = countryData.dialCode;
       });
     });
-
   </script>
 </article>
+
+</body>
+</html>

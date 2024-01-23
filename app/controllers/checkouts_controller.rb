@@ -13,23 +13,23 @@ class CheckoutsController < CheckoutBaseController
   # Updates the order and advances to the next state (when possible.)
   def update
     if update_order
-
       assign_temp_address
+        unless transition_forward
+          redirect_on_failure
+          return
+        end
 
-      unless transition_forward
-        redirect_on_failure
-        return
-      end
-
-      if @order.completed?
-        finalize_order
-        # make_upi_payment_link_request
-      else
-        send_to_next_state
-      end
-
+        if @order.completed?
+          finalize_order
+          # make_upi_payment_link_request
+        else
+          send_to_next_state
+        end
     else
       render :edit
+    end
+    if params[:state] == 'success'
+      update_order_with_payment_details
     end
   end
 
@@ -71,20 +71,23 @@ class CheckoutsController < CheckoutBaseController
     redirect_to checkout_state_path(@order.state)
   end
 
-  def make_upi_payment_link_request
-    # UPI Payment Link Request
-    url = URI("https://in.staging.decentro.tech/v2/payments/upi/link")
+  def update_order_with_payment_details
+    # Parse the JSON data from the request
+    data = JSON.parse(request.body.read)
 
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
+    # Extract necessary information
+    razorpay_payment_id = data['razorpay_payment_id']
+    upi_id = data['upi_id']
 
-    request = Net::HTTP::Post.new(url)
-    request["accept"] = 'application/json'
-    request["content-type"] = 'application/json'
-    request.body = "{\"customized_qr_with_logo\":\"0\"}"
+    # Your logic to update the order with payment details
+    # Example: Update the order status or store payment information
+    @order.update_attributes(razorpay_payment_id: razorpay_payment_id, upi_id: upi_id)
 
-    response = http.request(request)
-    puts response.read_body
+    if @order.save
+      render json: { status: 'success', message: 'Order updated successfully' }
+    else
+      render json: { status: 'error', message: 'Failed to update order' }, status: :unprocessable_entity
+    end
   end
 
   def update_params

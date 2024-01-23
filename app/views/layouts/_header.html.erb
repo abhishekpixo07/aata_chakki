@@ -1,20 +1,85 @@
+<style>
+  .categories-container {
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+    margin-top: 10px;
+  }
+
+  .categories-heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: green;
+    text-decoration: underline;
+  }
+
+
+  .category-navigation {
+    display: flex;
+    justify-content: center;
+  }
+
+  .categories {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+  }
+
+  .category-item {
+    text-align: center;
+  }
+
+  .category-link {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+
+  .category-link:hover {
+    color: #ccc;
+  }
+</style>
 <header class="header">
   <div class="header__secondary-navigation">
     <%= render 'layouts/top_bar', taxons: taxons, taxon: taxon %>
   </div>
-  <div class="header__primary-navigation">
-    <div class="category-navigation">
-      <% categories = taxonomies.first %>
 
-      <nav class="categories">
-        <% cache [I18n.locale, categories, taxon] do %>
-          <%= render(TaxonsTreeComponent.new(
-            root_taxon: categories.root,
-            current_taxon: taxon,
-            max_level: 1,
-            base_class: 'categories')) if categories %>
-        <% end %>
-      </nav>
+  <% if request.path == '/' %>
+    <div class="hero__message">
+      <h1 class="hero-title">
+        <%# Home / Collection All %>
+      </h1>
     </div>
-  </div>
+
+    <section class="hero">
+      <div class="hero__container">
+        <div class="hero__message">
+          <p class="hero-title">
+            <%# <b>Collection All</b> %>
+          </p>
+        </div>
+      </div>
+    </section>
+  <% end %>
+  <body>
+    <div class="categories-container">
+      <h1 class="categories-heading">Shop By Categories</h1>
+      <div class="header__primary-navigation">
+        <div class="category-navigation">
+          <% categories = taxonomies.first %>
+          <nav class="categories">
+            <% cache [I18n.locale, categories, taxon] do %>
+              <%= render(TaxonsTreeComponent.new(
+                root_taxon: categories.root,
+                current_taxon: taxon,
+                max_level: 1,
+                base_class: 'categories')) if categories %>
+            <% end %>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </body>
 </header>

@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   mount SolidusStripe::Engine, at: '/solidus_stripe'
   root to: 'home#index'
 
+
+  get 'new/subscription/plan', to: 'spree/admin/subscriptions#new_subscription_plan'
+  post 'create_subscription_plan', to: 'spree/admin/subscriptions#create_subscription_plan'
+  get 'edit/subscription/plan/:id', to: 'spree/admin/subscriptions#edit_subscription_plan', as: 'edit_subscription_plan'
+  patch 'update/subscription/plan/:id', to: 'spree/admin/subscriptions#update_subscription_plan', as: 'update_subscription_plan'
+
   devise_for(:user, {
     class_name: 'Spree::User',
     singular: :spree_user,
@@ -36,6 +42,8 @@ Rails.application.routes.draw do
     get '/enter/otp/:id', to: 'user_registrations#enter_otp', as: :enter_otp
     # Add a new route for confirming OTP
     post '/confirm_otp', to: 'user_registrations#confirm_otp', as: :confirm_otp
+    get 'user/susbscription', to: 'users#user_susbscription', as: :user_susbscription
+    post 'create_subscription', to: 'users#create_subscription'
 end
 
   resource :account, controller: 'users'

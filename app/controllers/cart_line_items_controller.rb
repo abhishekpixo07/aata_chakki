@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CartLineItemsController < StoreController
+  include CreateSubscription
+
   helper 'spree/products', 'orders'
 
   respond_to :html

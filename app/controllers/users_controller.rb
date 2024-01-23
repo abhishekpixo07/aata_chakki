@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < StoreController
-  skip_before_action :set_current_order, only: :show, raise: false
+  skip_before_action :set_current_order, only: [:show], raise: false
   prepend_before_action :authorize_actions, only: :new
 
   include Taxonomies
@@ -22,6 +22,37 @@ class UsersController < StoreController
       redirect_back_or_default(root_url)
     else
       render :new
+    end
+  end
+
+  def user_susbscription
+    @subscription_plans = SolidusSubscriptions::SubscriptionPlan.all
+  end
+
+  def create_subscription
+    load_object
+     # Parse the JSON data from the request
+     data = JSON.parse(request.body.read)
+     # Extract necessary information
+     razorpay_payment_id = data['razorpay_payment_id']
+     amount = data['amount']
+    p ":_----------------"
+    p @user
+     # Your logic to create the subscription based on payment success
+     # Example: Creating a subscription for the current user
+     subscription = SolidusSubscriptions::Subscription.create!(
+       user_id: @user.id, # Replace with your user identification logic
+       amount: amount,
+       currency: "INR",
+       payment_source_type: 'Razorpay',
+       payment_source_id: razorpay_payment_id
+
+     ) 
+    if subscription.save
+      alert('Subscription successful!');
+      render json: { status: 'success', message: 'Subscription created successfully' }
+    else
+      render json: { status: 'error', message: 'Failed to create subscription' }, status: :unprocessable_entity
     end
   end
 
