@@ -72,7 +72,7 @@ Spree::Backend::Config.configure do |config|
 end
 
 Spree::Api::Config.configure do |config|
-  config.requires_authentication = true
+  # config.requires_authentication = true
 end
 
 # Rules for avoiding to store the current path into session for redirects
