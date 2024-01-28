@@ -16,7 +16,8 @@ class BreadcrumbsComponent < ViewComponent::Base
     content_tag(:div, class: BASE_CLASS) do
       content_tag(:nav, class: breadcrumb_class) do
         content_tag(:ol, itemscope: '', itemtype: 'https://schema.org/BreadcrumbList') do
-          raw(items.map(&:mb_chars).join)
+          remaining_items = items.reject.with_index { |_, index| index == 1 }
+          raw(remaining_items.map(&:mb_chars).join)
         end
       end
     end

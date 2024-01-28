@@ -64,22 +64,26 @@
     </section>
   <% end %>
   <body>
-    <div class="categories-container">
-      <h1 class="categories-heading">Shop By Categories</h1>
-      <div class="header__primary-navigation">
-        <div class="category-navigation">
-          <% categories = taxonomies.first %>
-          <nav class="categories">
-            <% cache [I18n.locale, categories, taxon] do %>
-              <%= render(TaxonsTreeComponent.new(
-                root_taxon: categories.root,
-                current_taxon: taxon,
-                max_level: 1,
-                base_class: 'categories')) if categories %>
-            <% end %>
-          </nav>
+    <% allowed_paths = ['/account', '/about_us', '/contact_us']%>
+    <% if allowed_paths.any? { |path| request.path.include?(path) } %>
+    <%else%>
+      <div class="categories-container">
+        <h1 class="categories-heading">Shop By Categories</h1>
+        <div class="header__primary-navigation">
+          <div class="category-navigation">
+            <% categories = taxonomies.first %>
+            <nav class="categories">
+              <% cache [I18n.locale, categories, taxon] do %>
+                <%= render(TaxonsTreeComponent.new(
+                  root_taxon: categories.root,
+                  current_taxon: taxon,
+                  max_level: 1,
+                  base_class: 'categories')) if categories %>
+              <% end %>
+            </nav>
+          </div>
         </div>
       </div>
-    </div>
+    <%end%>
   </body>
 </header>
