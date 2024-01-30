@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get 'new/subscription/plan', to: 'spree/admin/subscriptions#new_subscription_plan'
   post 'create_subscription_plan', to: 'spree/admin/subscriptions#create_subscription_plan'
+  
   get 'edit/subscription/plan/:id', to: 'spree/admin/subscriptions#edit_subscription_plan', as: 'edit_subscription_plan'
   patch 'update/subscription/plan/:id', to: 'spree/admin/subscriptions#update_subscription_plan', as: 'update_subscription_plan'
 
@@ -45,6 +46,7 @@ Rails.application.routes.draw do
     post '/confirm_otp', to: 'user_registrations#confirm_otp', as: :confirm_otp
     get 'user/susbscription', to: 'users#user_susbscription', as: :user_susbscription
     post 'create_subscription', to: 'users#create_subscription'
+    post 'update_subscription', to: 'users#update_subscription'
   end
 
   get '/about_us', to: 'home#about_us', as: 'about_us'

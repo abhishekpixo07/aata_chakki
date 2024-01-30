@@ -4,7 +4,7 @@
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <!-- Add your Razorpay key -->
   <script>
-    var razorpayKey = 'rzp_test_Ycedid9q0giBpS'; // Replace with your actual Razorpay key
+    var razorpayKey = 'rzp_test_452ST3VCdXCSSJ'; // Replace with your actual Razorpay key
   </script>
  <style>
  body {
@@ -133,58 +133,94 @@
 <!-- Razorpay payment script -->
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+ document.addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('.razorpay-button');
 
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
         var amount = this.getAttribute('data-amount');
 
-        var options = {
-          key: razorpayKey,
-          amount: amount,
-          currency: 'INR',
-          name: 'Grind & Pound',
-          description: 'Subscription Payment',
-          image: 'URL to your company logo',
-          handler: function (response) {
-            // Make an AJAX request to your server to create the subscription
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/create_subscription', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
+        // First, make an AJAX request to your server to create the subscription
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/create_subscription', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
 
-            // Include the CSRF token in the request headers
-            var csrfToken = document.querySelector("meta[name=csrf-token]").content;
-            xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+        // Include the CSRF token in the request headers
+        var csrfToken = document.querySelector("meta[name=csrf-token]").content;
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
 
-            xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                  var jsonResponse = JSON.parse(xhr.responseText);
-                  if (jsonResponse.status === 'success') {
-                    console.log('Subscription created successfully. Subscription ID:', jsonResponse.subscription_id);
-                    // Handle other success actions as needed
-                  } else {
-                    console.error('Failed to create subscription. Error:', jsonResponse.message);
-                    // Handle error
-                  }
-                } else {
-                  console.error('Failed to create subscription. Server returned status:', xhr.status);
-                  // Handle error
-                }
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              var jsonResponse = JSON.parse(xhr.responseText);
+              if (jsonResponse.status === 'success') {
+                console.log('Subscription created successfully. Subscription ID:', jsonResponse.subscription_id);
+                // Only open the payment modal if the subscription was created successfully
+                openPaymentModal(amount, jsonResponse.subscription_id);
+              } else {
+                console.error('Failed to create subscription. Error:', jsonResponse.message);
+                // Handle error
               }
-            };
-
-            var data = JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, amount: amount });
-            xhr.send(data);
-
-            alert('Payment successful!');
-          },
+            } else {
+              console.error('Failed to create subscription. Server returned status:', xhr.status);
+              // Handle error
+            }
+          }
         };
 
-        var rzp = new Razorpay(options);
-        rzp.open();
+        var data = JSON.stringify({ amount: amount });
+        xhr.send(data);
       });
     });
-  });
+});
+
+function openPaymentModal(amount, subscription_id) {
+  var options = {
+    key: razorpayKey,
+    amount: amount,
+    currency: 'INR',
+    name: 'Grind & Pound',
+    description: 'Subscription Payment',
+    image: 'URL to your company logo',
+    handler: function (response) {
+      // Make an AJAX request to your server to confirm the payment
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/update_subscription', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      // Include the CSRF token in the request headers
+      var csrfToken = document.querySelector("meta[name=csrf-token]").content;
+      xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var jsonResponse = JSON.parse(xhr.responseText);
+            if (jsonResponse.status === 'success') {
+              console.log('Payment confirmed successfully.');
+              alert('Payment successful!');
+              
+              // Redirect to the account path after successful payment
+              window.location.href = '/account';
+            } else {
+              console.error('Failed to confirm payment. Error:', jsonResponse.message);
+              // Handle error
+            }
+          } else {
+            console.error('Failed to confirm payment. Server returned status:', xhr.status);
+            // Handle error
+          }
+        }
+      };
+
+      var data = JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, amount: amount, subscription_id: subscription_id });
+      xhr.send(data);
+    },
+  };
+
+  var rzp = new Razorpay(options);
+  rzp.open();
+}
+
+
 </script>

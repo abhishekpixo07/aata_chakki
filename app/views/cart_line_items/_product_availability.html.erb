@@ -1,9 +1,7 @@
 <%
   base_class = "product-availability".freeze
-
   # Optional props
   classes = local_assigns.fetch(:classes, [])
-
   # Classes
   class_names = classes.push(base_class).join(" ")
 %>
@@ -11,8 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        
-        input {
+        .box_categories input {
             width: 300px;
             padding: 10px;
             border: none;
@@ -22,19 +19,16 @@
             outline: none;
             transition: box-shadow 0.3s ease-in-out;
         }
-
-        input:focus {
+        .box_categories input:focus {
             box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
         }
-
         ::placeholder {
             color: #ccc;
         }
-
-        button {
+        .box_categories button {
             /* margin-top: 10px; */
             padding: 10px 20px;
-            background-color: #3c76f0;
+            background-color: #3C76F0;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -42,19 +36,18 @@
             font-size: 16px;
             transition: background-color 0.3s ease-in-out;
         }
-
-        button:hover {
+        .box_categories button:hover {
             background-color: #1565C0;
         }
     </style>
 </head>
-
-<label for="pinCode" style="margin-right: 10px;">Check Pin Code Availability:</label>
+<body>
+    <div class="box_categories">
+        <label for="pinCode" style="margin-right: 10px;">Check Pin Code Availability:</label>
 <div style="display: flex; align-items: center;">
   <input type="text" id="pinCode" name="pinCode" placeholder="Enter Pin Code">
   <button type="button" onclick="checkAvailability()" style="margin-left: 10px;">Check</button>
 </div><br>
-
 <% if product.master.can_supply? %>
   <link itemprop="availability" href="http://schema.org/InStock" />
 <% elsif product.variants.empty? %>
@@ -66,3 +59,5 @@
     <%= t('spree.out_of_stock') %>
   </span>
 <% end %>
+    </div>
+</body>

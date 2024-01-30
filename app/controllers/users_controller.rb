@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'razorpay'
 
 class UsersController < StoreController
   skip_before_action :set_current_order, only: [:show], raise: false
@@ -30,31 +31,37 @@ class UsersController < StoreController
   end
 
   def create_subscription
-    load_object
-     # Parse the JSON data from the request
-     data = JSON.parse(request.body.read)
-     # Extract necessary information
-     razorpay_payment_id = data['razorpay_payment_id']
-     amount = data['amount']
-    p ":_----------------"
-    p @user
-     # Your logic to create the subscription based on payment success
-     # Example: Creating a subscription for the current user
-     subscription = SolidusSubscriptions::Subscription.create!(
-       user_id: @user.id, # Replace with your user identification logic
-       amount: amount,
-       currency: "INR",
-       payment_source_type: 'Razorpay',
-       payment_source_id: razorpay_payment_id
-
-     ) 
+    if !spree_current_user.subscriptions.present?
+      data = JSON.parse(request.body.read)
+      amount = data['amount'].to_i
+      # Your logic to create the subscription based on payment success
+      # Example: Creating a subscription for the current user
+      subscription = SolidusSubscriptions::Subscription.create!(
+        user_id: spree_current_user.id, # Replace with your user identification logic
+        amount: amount / 100,  # Convert the amount to decimal
+        actionable_date: Time.now,
+        currency: "INR",
+        payment_source_type: 'Razorpay',
+      ) 
+      if subscription.save
+        render json: { status: 'success', message: 'Subscription created successfully', subscription_id: subscription.id }
+      else
+        render json: { status: 'error', message: 'Failed to create subscription' }, status: :unprocessable_entity
+      end
+    end
+   end
+   
+  def update_subscription
+    subscription = SolidusSubscriptions::Subscription.find(params[:subscription_id])
+    # Update the subscription status here
+    subscription.state = 'active' # Or whatever status you want to set
     if subscription.save
-      alert('Subscription successful!');
-      render json: { status: 'success', message: 'Subscription created successfully' }
+      render json: { status: 'success', message: 'Subscription updated successfully' }
     else
-      render json: { status: 'error', message: 'Failed to create subscription' }, status: :unprocessable_entity
+      render json: { status: 'error', message: 'Failed to update subscription' }, status: :unprocessable_entity
     end
   end
+   
 
   def edit
     load_object
@@ -73,6 +80,7 @@ class UsersController < StoreController
     else
       # Email doesn't exist or belongs to the same user, proceed with the update
       if @user.update(user_params)
+        # create_razorpay_customer(@user) if !@user.customer_id.present?
         spree_current_user.reload
         redirect_url = account_url
   
@@ -116,4 +124,40 @@ class UsersController < StoreController
   def accurate_title
     I18n.t('spree.my_account')
   end
+
+  # def create_razorpay_customer(user)
+  #   begin
+  #     customer = Razorpay::Customer.create({
+  #     name: user.first_name + user.last_name,
+  #     email: user.email,
+  #     contact: user.phone_number,
+  #     fail_existing: "0"
+  #     })
+  #     user.update(customer_id: customer.id ) if customer
+  #   rescue Razorpay::Error::RazorpayError => e
+  #     # Handle errors appropriately
+  #     puts "Failed to create Razorpay customer. Error: #{e.message}"
+  #     return nil
+  #   end
+  # end
+
+  # def subscription_params
+  #   # load_object
+  #   subscription_params = {
+  #     plan_id: "plan_NUPBmFhQZahGaa",
+  #     customer_id: @user.customer_id,
+  #     customer_notify: 1,
+  #     quantity: 1,
+  #     total_count: 1,
+  #     start_at: (Time.now + 5.minutes).to_i,
+  #     addons: [{
+  #         item: {
+  #           name: "Monthly subscription charges",
+  #           amount: 10000,
+  #           currency: "INR"
+  #         }
+  #     }],
+  #     } 
+  # end
+
 end

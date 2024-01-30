@@ -9,7 +9,7 @@ class SolidusSubscriptions::Subscription < ApplicationRecord
     has_many :installment_details, class_name: 'SolidusSubscriptions::InstallmentDetail', through: :installments, source: :details
     has_many :events, class_name: 'SolidusSubscriptions::SubscriptionEvent'
     has_many :orders, class_name: '::Spree::Order', inverse_of: :subscription
-    belongs_to :store, class_name: '::Spree::Store'
+    # belongs_to :store, class_name: '::Spree::Store'
     belongs_to :shipping_address, class_name: '::Spree::Address', optional: true
     belongs_to :billing_address, class_name: '::Spree::Address', optional: true
     belongs_to :payment_method, class_name: '::Spree::PaymentMethod', optional: true
@@ -17,7 +17,7 @@ class SolidusSubscriptions::Subscription < ApplicationRecord
 
     validates :user, presence: true
     validates :skip_count, :successive_skip_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
-    validates :interval_length, numericality: { greater_than: 0 }
+    # validates :interval_length, numericality: { greater_than: 0 }
     validates :payment_method, presence: true, if: -> { payment_source }
     validates :payment_source, presence: true, if: -> { payment_method&.source_required? }
     validates :currency, inclusion: { in: ::Money::Currency.all.map(&:iso_code) }
@@ -367,7 +367,7 @@ class SolidusSubscriptions::Subscription < ApplicationRecord
 
     def set_payment_method
       if payment_source
-        self.payment_method = payment_source.payment_method
+        self.payment_method = 'upi'
       end
     end
 
