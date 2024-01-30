@@ -82,7 +82,7 @@ class UsersController < StoreController
       if @user.update(user_params)
         # create_razorpay_customer(@user) if !@user.customer_id.present?
         spree_current_user.reload
-        redirect_url = account_url
+        redirect_url = root_url
   
         if params[:user][:password].present?
           # this logic needed b/c devise wants to log us out after password changes

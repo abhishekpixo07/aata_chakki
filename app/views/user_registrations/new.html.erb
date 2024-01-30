@@ -80,7 +80,7 @@
       <%= f.label :phone_number %>
       <div class="phone-number-input">
         <%= f.hidden_field :phone_country_code, id: 'phone_country_code' %>
-        <%= f.text_field :phone_number, placeholder: 'Enter Your Mobile Number', required: true, class: 'phone-number intl-tel-input' %>
+        <%= f.text_field :phone_number, placeholder: 'Enter Your Mobile Number', required: true, pattern: "[0-9]*", class: 'phone-number intl-tel-input' %>
       </div>
     </div>
 
@@ -89,32 +89,61 @@
     </div>
   <% end %>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const phoneNumberField = document.querySelector(".phone-number");
-      const phoneCountryCodeField = document.querySelector("#phone_country_code");
-      const form = document.querySelector('.auth-form');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+ $(document).ready(function(){
+    $(".phone-number").keypress(function (e) {
+      if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+    });
+ });
 
-      let iti = window.intlTelInput(phoneNumberField, {
-        initialCountry: "in",
-        separateDialCode: true,
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        formatOnDisplay: false,
-      });
+ document.addEventListener("DOMContentLoaded", function () {
+    const phoneNumberField = document.querySelector(".phone-number");
+    const phoneCountryCodeField = document.querySelector("#phone_country_code");
+    const form = document.querySelector('.auth-form');
 
-      phoneNumberField.addEventListener('countrychange', function() {
-        let countryData = iti.getSelectedCountryData();
-        phoneCountryCodeField.value = countryData.dialCode;
-      });
-
-      form.addEventListener('submit', function(event) {
-        let countryData = iti.getSelectedCountryData();
-        phoneCountryCodeField.value = countryData.dialCode;
+    $(document).ready(function(){
+      $(".phone-number").on("input", function() {
+        let maxLength = 10;
+        let inputValue = $(this).val();
+        
+        // Trim input to the maximum length
+        if (inputValue.length > maxLength) {
+          $(this).val(inputValue.slice(0, maxLength));
+        }
+        
+        // Allow only numeric input
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
       });
     });
-  </script>
+
+    let iti = window.intlTelInput(phoneNumberField, {
+      initialCountry: "in",
+      separateDialCode: true,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      formatOnDisplay: false,
+    });
+
+    phoneNumberField.addEventListener('countrychange', function() {
+      let countryData = iti.getSelectedCountryData();
+      phoneCountryCodeField.value = countryData.dialCode;
+    });
+
+    form.addEventListener('submit', function(event) {
+      let countryData = iti.getSelectedCountryData();
+      phoneCountryCodeField.value = countryData.dialCode;
+
+      // Check if the phone number is exactly 10 digits
+      let phoneNumber = phoneNumberField.value;
+      if (!(/^\d{10}$/.test(phoneNumber))) {
+        alert("The phone number must be exactly 10 digits.");
+        event.preventDefault(); // Prevent form submission
+      }
+    });
+ });
+</script>
 </article>
 
 </body>

@@ -192,10 +192,6 @@
       <p><%= I18n.t('spree.you_have_no_orders_yet') %></p>
     <% end %>
   </div>
-
-  <%= form_with(url: logout_path, method: Devise.sign_out_via, local: true) do %>
-    <%= button_tag(t("spree.logout"), class: 'logout_button') %>
-  <% end %>
 </div>
 </body>
 </html>
