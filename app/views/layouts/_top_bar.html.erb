@@ -32,18 +32,28 @@
       background-color: #F8F9FA;
     }
     .custom-header {
-      width: 99vw;
-      margin-left: -13px;
+      width: 100vw;
+      left: 0;
+      top: 0;
+      right: 0;
+      position: fixed;
     }
     .custom-header nav {
       width: 100%;
-      height: 70px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
       background-color: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
+      padding: 1rem 3rem;
+    }
+    .custom-header-box {
+      background-color: #1B5928;
+      padding: 8px;
+      color: #fff;
+      text-align: center;
     }
     .custom-header a {
       color: #20303C;
@@ -57,33 +67,9 @@
       display: flex;
       align-items: center;
     }
-    .search-input {
-      color: #495057;
-      padding: 10px;
-      margin-right: 10px;
-      border: 1px solid #CED4DA;
-      border-radius: 5px;
-      font-size: 14px;
-      transition: border-color 0.3s ease;
-    }
-    .search-input:focus {
-      border-color: #007BFF;
-    }
-    .search-button {
-      padding: 10px;
-      background-color: #007BFF;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .search-button:hover {
-      background-color: #0056B3;
-    }
-    .logo img {
-      width: 135px;
-      height: 38px;
+    .logo_div img {
+      width: 131px;
+      height: 41px;
     }
     .imgicons {
       display: flex;
@@ -93,69 +79,50 @@
     .loginText {
       display: flex;
       align-items: center;
-      gap: 5px;
     }
     .loginText:hover {
       color: #007BFF;
     }
-    nav a {
-      font-size: 16px;
+    .shopping_card {
+      color: gray;
+      margin-left: 14px;
+    }
+    .shopping_card:hover {
+      color: #007BFF;
+    }
+    .header_nav_link a {
+      font-size: 15px;
       font-weight: 500;
       letter-spacing: 1px;
-      margin: 0 14px;
+      margin: 0 23px;
       text-transform: uppercase;
     }
     a.auth-link {
       color: #20303C;
       margin: 0 0 7px;
     }
-     .custom-header {
+    .custom-header {
       position: fixed;
       width: 100%;
       top: 0;
-      z-index: 1000; /* Adjust the z-index as needed */
+      z-index: 1000;
     }
-    /* Add this style to create space at the top to prevent content from being hidden behind the fixed header */
+    .custom-header-box strong {
+      color: #FDB823;
+    }
     body {
-      padding-top: 110px; /* Adjust the value based on your header height */
+      padding-top: 110px;
     }
-    @media only screen and (min-width: 200px) and (max-width: 550px) {
-      .custom-header nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .custom-header a {
-        margin: 10px 0;
-      }
-    }
-    @media only screen and (min-width: 600px) and (max-width: 850px) {
-      .custom-header {
-        width: auto;
-      }
-      .custom-header nav {
-        justify-content: flex-start
-      }
-    }
-    @media only screen and (min-width: 900px) and (max-width: 1100px) {
-      .custom-header {
-        width: auto;
-      }
-      .custom-header nav {
-        justify-content: flex-start
-      }
-    }
-    @media screen and (min-width: 1200px) {
-      .custom-header {
-        width: 100vw;
-        margin-left: -69px;
-      }
-    }
-     .profile_dropbtn {
+    .profile_dropbtn {
       background-color: white;
       color: gray;
-       position: relative;
+      position: relative;
       display: inline-block;
-      border:none;
+      border: none;
+    }
+    .profile_dropdown {
+      position: relative;
+      display: inline-block;
     }
     .profile_dropdown-content {
       display: none;
@@ -165,29 +132,15 @@
       overflow: auto;
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
       z-index: 1;
-       padding-bottom: 10px;
+      top: 100%;
+      right: -60px;
     }
-
     .profile_dropdown-content a {
-      color: #333;
-      padding: 5px 10px;
+      color: black;
+      padding: 12px 16px;
       text-decoration: none;
       display: block;
-      font-size: 14px;
-      transition:
-       background-color 0.3s ease;
     }
-
-    .profile_dropdown-content a:hover {
-      background-color: #f0f0f0;
-    }
-
-    /* Show the dropdown on hover */
-    .profile_dropbtn:hover .profile_dropdown-content {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
     .profile_drop_icons {
       margin: 0 8px -7px
     }
@@ -198,107 +151,185 @@
       display: block;
     }
     .users_initial_icons {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    color: #fff;
-    font-size: 24px;
-    line-height: 26px;;
-    text-align: center;
-    border-radius: 50%;
-    background-color: #1B5928;
-    margin-bottom: 6px;
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      font-size: 24px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      background-color: #1B5928;
+      margin-bottom: 6px;
     }
     .users_initial_icons::first-letter {
       font-size: 18px;
+    }
+    .mobile_nav {
+      display: none;
+    }
+    .close_icon {
+      display: none;
+    }
+    @media only screen and (max-width: 800px) {
+      .header_nav_link {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 135px;
+        left: 0;
+        height: 300px;
+        max-width: 250px;
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header_nav_link a {
+        padding: 10px;
+        text-align: left;
+        width: auto;
+        box-sizing: border-box;
+        color: #1B5928;
+        border-bottom: 1px solid #DDD8D8;
+      }
+      .mobile_nav {
+        display: block;
+        color: #1B5928;
+      }
+      <%# .close_icon {
+        display: inline-block;
+        vertical-align: middle;
+        color: white;
+      } %>
+      .logo_div img {
+        width: 100px;
+        height: 35px;
+      }
+      .loginText {
+        display: none;
+      }
+      .shopping_card {
+        display: none;
+      }
+      .custom-header nav {
+        padding: 1rem 2rem;
+      }
+    }
+    @media only screen and (max-width: 400px) {
+      .header_nav_link {
+        top: 175px;
+        max-width: 200px;
+      }
     }
   </style>
 </head>
 <body>
   <header class="custom-header">
-    <nav class="top-header">
-      <div class="logo">
+    <div class="custom-header-box">
+      <p>Made to order, <strong>Freshly milled</strong> flours. Order before <strong>7:00 PM</strong> for next-day
+        delivery in <strong>Bangalore.</strong></p>
+    </div>
+    <nav>
+      <div class="mobile_nav" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list"
+          viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+        </svg>
+      </div>
+      <div class="logo_div">
         <h1 class="animation infinite heartBeat">
           <%= link_to image_tag('PL-Black.png', alt: 'Description of the image' ), root_path %>
         </h1>
       </div>
-      <a href="<%= root_path %>">Home</a>
-      <a href="<%= products_path %>">Shop</a>
-      <a href="<%=about_us_path%>">About</a>
-      <a href="<%=contact_us_path%>">Contact</a>
-      <div class="search-bar">
-        <%= render 'shared/search/search_bar' , taxons: taxons, taxon: taxon %>
+      <div class="header_nav_link">
+        <a href="<%= root_path %>">Home</a>
+        <a href="<%= products_path %>">Shop</a>
+        <a href="<%=about_us_path%>">About</a>
+        <a href="<%=contact_us_path%>">Contact</a>
       </div>
       <div class="imgicons">
-        <a>
-          <div class="loginText">
-            <span class="user_singup_text">
-              <% if spree_current_user %>
-                  <div class="profile_dropdown">
-                    <button onclick="myFunction()" class="profile_dropbtn">
-                     <%# <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                          class="bi bi-person" viewBox="0 0 16 16">
-                          <path
-                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                        </svg> %>
-                        <div class="users_initial_icons"><%=spree_current_user.first_name.present? ? spree_current_user.first_name.first.upcase : ''%></div>
-                    </button>
-                    <div id="myDropdown" class="profile_dropdown-content">
-                      <a href="<%=account_path%>"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                          class="bi bi-person profile_drop_icons" viewBox="0 0 16 16">
-                          <path
-                            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                        </svg>Profile</a>
-                      <a href="<%=user_susbscription_path%>"><i class="fa fa-user-plus profile_drop_icons" aria-hidden="true"></i>  Subscription</a>
-                      <a href="#" onclick="logoutForm.submit()" class="logout_link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                          class="bi bi-box-arrow-left profile_drop_icons" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd"
-                            d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
-                          <path fill-rule="evenodd"
-                            d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
-                        </svg>
-                        Logout
-                      </a>
-                      <%= form_with(url: logout_path, method: :delete, local: true, id: 'logoutForm') do %>
-                        <!-- Form contents (if any) -->
-                      <% end %>
-                    </div>
+        <div class="search-bar">
+          <%= render 'shared/search/search_bar' , taxons: taxons, taxon: taxon %>
+        </div>
+        <div class="loginText">
+          <span class="user_singup_text">
+            <% if spree_current_user %>
+              <div class="profile_dropdown">
+                <button onclick="myFunction()" class="profile_dropbtn">
+                  <div class="users_initial_icons">
+                    <%=spree_current_user.first_name.present? ? spree_current_user.first_name.first.upcase : ""%>
                   </div>
-                <%#= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
-                  <% else %>
-                    <%= link_to "Signup" , signup_path, class: 'auth-link' %>
-                      <% end %>
-            </span>
-          </div>
-        </a>
-        <div class="top-bar" data-controller="top-bar">
-          <div class="cart-link" id="link-to-cart" data-top-bar-target="cartLink">
-            <noscript>
-              <%= link_to t('spree.cart'), cart_path %>
-            </noscript>
-          </div>
+                </button>
+                <div id="myDropdown" class="profile_dropdown-content">
+                  <a href="<%=account_path%>"> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                      class="bi bi-person profile_drop_icons" viewBox="0 0 16 16">
+                      <path
+                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                    </svg>Profile</a>
+                  <%if !spree_current_user.subscriptions.present? %><a href="<%=user_susbscription_path%>"><i class="fa fa-user-plus profile_drop_icons" aria-hidden="true"></i>Subscribe</a><%end%>
+                  <a href="#" onclick="logoutForm.submit()" class="logout_link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                      class="bi bi-box-arrow-left profile_drop_icons" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+                      <path fill-rule="evenodd"
+                        d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+                    </svg>
+                    Logout
+                  </a>
+                  <%= form_with(url: logout_path, method: :delete, local: true, id: 'logoutForm' ) do %>
+                    <!-- Form contents (if any) -->
+                    <% end %>
+                </div>
+              </div>
+              <%#= link_to I18n.t('spree.my_account'), account_path, class: 'auth-link' %>
+                <% else %>
+                  <%= link_to "Signup" , signup_path, class: 'auth-link' %>
+                    <% end %>
+          </span>
+        </div>
+        <div class="shopping_card">
+          <a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="currentColor" class="bi bi-cart"
+              viewBox="0 0 16 16">
+              <path
+                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+            </svg>
+          </a>
         </div>
       </div>
     </nav>
   </header>
-   <script>
-      function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-      }
-      // Close the dropdown if the user clicks outside of it
-      window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-          var dropdowns = document.getElementsByClassName("dropdown-content");
-          var i;
-          for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-              openDropdown.classList.remove('show');
-            }
+  <script>
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    window.onclick = function (event) {
+      if (!event.target.matches('.profile_dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
           }
         }
       }
-    </script>
+    }
+    function toggleMenu() {
+      var navLinks = document.querySelector('.header_nav_link');
+      var closeIcon = document.querySelector('.close_icon');
+      if (navLinks.style.display === 'flex') {
+        navLinks.style.display = 'none';
+        closeIcon.style.display = 'none';
+      } else {
+        navLinks.style.display = 'flex';
+        closeIcon.style.display = 'block';
+      }
+    }
+  </script>
+  </script>
+  </script>
 </body>
 </html>
