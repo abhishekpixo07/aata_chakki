@@ -55,6 +55,7 @@ class UsersController < StoreController
     subscription = SolidusSubscriptions::Subscription.find(params[:subscription_id])
     # Update the subscription status here
     subscription.state = 'active' # Or whatever status you want to set
+    subscription.subscription_plan_id = params[:subscription_plan_id]
     if subscription.save
       render json: { status: 'success', message: 'Subscription updated successfully' }
     else

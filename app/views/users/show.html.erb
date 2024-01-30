@@ -1,9 +1,17 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+    body {
+      font-family: arial;
+    }
+    .edit_main_title {
+      background-color: #1B5928;
+      padding: 8px;
+      color: #fff;
+      text-align: center;
+    }
     .edit_container {
       display: flex;
       justify-content: center;
@@ -11,23 +19,36 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-      max-width: 50%;
+      max-width: 75%;
       margin: auto;
       text-align: center;
-      font-family: arial;
-      padding: 60px;
-      margin-top: 60px;
-      height: 300px;
+      padding: 75px;
+      margin-top: 71px;
       position: relative;
     }
-    .edit_container::before {
+    .edit_container h2,
+    .edit_last_div h3,
+    .edit_last_div p,
+    .edit_title_para {
+      text-align: center;
+    }
+    .edit_container p {
+      color: grey;
+    }
+    .edit_right_div::before,
+    .edit_last_div::before {
       content: '';
       position: absolute;
       top: 51px;
       bottom: 58px;
-      left: 50%;
       border-left: 1px solid #EFE9E9;
       margin-left: -28px;
+    }
+    .edit_right_div::before {
+      left: calc(35% - 1px);
+    }
+    .edit_last_div::before {
+      left: calc(70% - 1px);
     }
     .edit_heading {
       font-size: 25px;
@@ -48,19 +69,21 @@
     .edit_button {
       outline: 0;
       display: inline-block;
-      padding: 7px;
+      padding: 9px;
       color: white;
-      background-color: #1B5928;
+      background-color: #1B674D;
       text-align: center;
       cursor: pointer;
-      width: 72%;
-      height: 20%
+      width: 100%;
+      height: 20%;
       font-size: 15px;
       border: 1px solid #1B5928;
       border-radius: 18px;
       box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+      margin-top: 10px;
     }
     .edit_button:hover {
+      background-color: #34543A;
       color: white;
     }
     .edit_left_div {
@@ -70,9 +93,12 @@
       justify-content: flex-start;
       align-items: center;
       margin-right: 20px;
-      ;
     }
     .edit_right_div {
+      text-align: left;
+      margin-left: 112px;
+    }
+    .edit_last_div {
       text-align: left;
       margin-left: 112px;
     }
@@ -88,9 +114,6 @@
       height: 100%;
       object-fit: cover;
     }
-    .edit_button {
-      margin-top: 10px;
-    }
     .myordercard {
       border: 1px solid #ddd;
       border-radius: 8px;
@@ -98,7 +121,6 @@
       max-width: 75%;
       margin: auto;
       text-align: center;
-      font-family: arial;
       padding: 60px;
       margin-top: 60px;
     }
@@ -110,7 +132,6 @@
       background-color: #1B5928;
       text-align: center;
       cursor: pointer;
-      /* width: 80%; */
       font-size: 15px;
       border: 1px solid #1B5928;
       border-radius: 18px;
@@ -119,79 +140,116 @@
   </style>
 </head>
 <body>
-
-<div class="edit_container">
-  <div class="edit_left_div">
-    <div class="users-image">
-      <%= link_to(image_tag('user.png', alt: 'Description of the image', class: 'subscription-image')) %><br>
+  <div class="edit_main_title">
+    <h2>Profile</h2>
+  </div>
+  <div class="edit_container">
+    <div class="edit_left_div">
+      <div class="users-image">
+        <%= link_to(image_tag('user.png', alt: 'Description of the image' , class: 'subscription-image' )) %><br>
+      </div>
+      <h3 class="edit_heading">
+        <%= @user.first_name %>
+      </h3>
     </div>
-    <h3 class="edit_heading"><%= @user.first_name %></h3>
+    <div class="edit_right_div">
+      <p class="edit_title">
+        <span><i class='fas fa-user-alt' style='font-size:20px'></i>&nbsp;&nbsp;<%= @user.first_name %>
+            <%= @user.last_name %></span>
+      </p>
+      <p class="edit_title"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="currentColor"
+          class="bi bi-envelope" viewBox="0 0 16 16">
+          <path
+            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
+        </svg><span>
+          <%= @user.email %>
+        </span></p>
+      <p class="edit_title"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="currentColor"
+          class="bi bi-telephone" viewBox="0 0 16 16">
+          <path
+            d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+        </svg><span>
+          <%= @user.phone_country_code %>
+            <%= @user.phone_number %>
+        </span></p>
+      <%= link_to I18n.t('spree.edit'), edit_account_path, class: 'edit_button' %>
+    </div>
+    <div class="edit_last_div">
+        <%if !@user.subscriptions.present? %>
+          <%= link_to "Subscribe Now" , user_susbscription_path, class: 'edit_button' %>
+        <%else%>
+          <% subscription = @user.subscriptions.last
+          plan = SolidusSubscriptions::SubscriptionPlan.find(subscription.subscription_plan_id)%>
+          <h3>subscripton details</h3>
+          <p class="edit_title"><span>Title: <%=plan.title.titleize%></span></p>
+          <p class="edit_title"><span>Amount: <i class="fa fa-rupee" style="font-size:15px"></i> <%=plan.amount%></span></p>
+        <%end%>  
+    </div>
   </div>
-  <div class="edit_right_div">
-    <p class="edit_title"> 
-      <span><i class='fas fa-user-alt' style='font-size:20px'></i>&nbsp;&nbsp;<%= @user.first_name %> <%= @user.last_name %></span>
-    </p>
-    <p class="edit_title"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="currentColor"
-        class="bi bi-envelope" viewBox="0 0 16 16">
-        <path
-          d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
-      </svg><span><%= @user.email %></span></p>
-    <p class="edit_title"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="16" fill="currentColor"
-        class="bi bi-telephone" viewBox="0 0 16 16">
-        <path
-          d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-      </svg><span><%= @user.phone_country_code %><%= @user.phone_number %></span></p>
-    <%= link_to I18n.t('spree.edit'), edit_account_path, class: 'edit_button' %>
-    <!-- Add this code in the appropriate place in your view, such as user show page -->
-    <% if @user.subscriptions.present? %>
-      <span class="label label-success edit_button">Subscribed</span>
-    <% else %>
-      <%= link_to "Subscribe Now", user_susbscription_path, class: 'edit_button' %>
-    <% end %>
+  <div class="myordercard">
+    <div class="account-summary__orders">
+      <h2>
+        <%= I18n.t('spree.my_orders') %>
+      </h2>
+      <% if @orders.present? %>
+        <% @orders.each do |order| %>
+          <dl class="account-order">
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t(:number, scope: 'activerecord.attributes.spree/order' ) %>
+              </dt>
+              <dd>
+                <%= link_to order.number, order_url(order) %>
+              </dd>
+            </div>
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t('spree.date') %>
+              </dt>
+              <dd>
+                <%= l order.completed_at.to_date %>
+              </dd>
+            </div>
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t('spree.status') %>
+              </dt>
+              <dd>
+                <%= I18n.t("spree.order_state.#{order.state}").titleize %>
+              </dd>
+            </div>
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t('spree.payment_state') %>
+              </dt>
+              <dd>
+                <%= I18n.t("spree.payment_states.#{order.payment_state}").titleize if order.payment_state %>
+              </dd>
+            </div>
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t('spree.shipment_state') %>
+              </dt>
+              <dd>
+                <%= I18n.t("spree.shipment_states.#{order.shipment_state}").titleize if order.shipment_state %>
+              </dd>
+            </div>
+            <div class="account-order__detail">
+              <dt>
+                <%= I18n.t('spree.total') %>
+              </dt>
+              <dd>
+                <%= order.display_total %>
+              </dd>
+            </div>
+          </dl>
+          <% end %>
+            <% else %>
+              <p>
+                <%= I18n.t('spree.you_have_no_orders_yet') %>
+              </p>
+              <% end %>
+    </div>
   </div>
-</div>
-
-<div class="myordercard">
-   <div class="account-summary__orders">
-    <h2><%= I18n.t('spree.my_orders') %></h2>
-    <% if @orders.present? %>
-      <% @orders.each do |order| %>
-        <dl class="account-order">
-          <div class="account-order__detail">
-            <dt><%= I18n.t(:number, scope: 'activerecord.attributes.spree/order') %></dt>
-            <dd><%= link_to order.number, order_url(order) %></dd>
-          </div>
-
-          <div class="account-order__detail">
-            <dt><%= I18n.t('spree.date') %></dt>
-            <dd><%= l order.completed_at.to_date %></dd>
-          </div>
-
-          <div class="account-order__detail">
-            <dt><%= I18n.t('spree.status') %></dt>
-            <dd><%= I18n.t("spree.order_state.#{order.state}").titleize %></dd>
-          </div>
-
-          <div class="account-order__detail">
-            <dt><%= I18n.t('spree.payment_state') %></dt>
-            <dd><%= I18n.t("spree.payment_states.#{order.payment_state}").titleize if order.payment_state %></dd>
-          </div>
-
-          <div class="account-order__detail">
-            <dt><%= I18n.t('spree.shipment_state') %></dt>
-            <dd><%= I18n.t("spree.shipment_states.#{order.shipment_state}").titleize if order.shipment_state %></dd>
-          </div>
-
-          <div class="account-order__detail">
-            <dt><%= I18n.t('spree.total') %></dt>
-            <dd><%= order.display_total %></dd>
-          </div>
-        </dl>
-      <% end %>
-    <% else %>
-      <p><%= I18n.t('spree.you_have_no_orders_yet') %></p>
-    <% end %>
-  </div>
-</div>
 </body>
 </html>

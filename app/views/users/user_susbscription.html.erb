@@ -122,8 +122,8 @@
           </svg><%= subscription_plan.title %></h2>
       <h3 class="price">₹ <%= subscription_plan.amount %></h3>
       <p><%= subscription_plan.description %></p>
-      <button class="razorpay-button" data-amount="<%= subscription_plan.amount * 100 %>">
-          Subscribe Now
+      <button class="razorpay-button" data-amount="<%= subscription_plan.amount * 100 %>" data-subscription-plan-id="<%= subscription_plan.id %>">
+        Subscribe Now
       </button>
    </div>
  <% end %>
@@ -139,6 +139,7 @@
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
         var amount = this.getAttribute('data-amount');
+        var subscriptionId = this.getAttribute('data-subscription-plan-id');
 
         // First, make an AJAX request to your server to create the subscription
         var xhr = new XMLHttpRequest();
@@ -156,7 +157,7 @@
               if (jsonResponse.status === 'success') {
                 console.log('Subscription created successfully. Subscription ID:', jsonResponse.subscription_id);
                 // Only open the payment modal if the subscription was created successfully
-                openPaymentModal(amount, jsonResponse.subscription_id);
+                openPaymentModal(amount, jsonResponse.subscription_id, subscriptionId);
               } else {
                 console.error('Failed to create subscription. Error:', jsonResponse.message);
                 // Handle error
@@ -174,7 +175,7 @@
     });
 });
 
-function openPaymentModal(amount, subscription_id) {
+function openPaymentModal(amount, subscription_id,subscription_plan_id) {
   var options = {
     key: razorpayKey,
     amount: amount,
@@ -213,7 +214,7 @@ function openPaymentModal(amount, subscription_id) {
         }
       };
 
-      var data = JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, amount: amount, subscription_id: subscription_id });
+      var data = JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, amount: amount, subscription_id: subscription_id, subscription_plan_id: subscription_plan_id });
       xhr.send(data);
     },
   };
