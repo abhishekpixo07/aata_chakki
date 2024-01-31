@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Select UPI App</title>
+  <title>Razorpay Payment</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
   <style>
     body {
@@ -14,10 +14,6 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
     }
 
     label {
@@ -34,158 +30,37 @@
     button {
       width: 100%;
       padding: 10px;
-      background-color: #4285f4;
+      background-color: #1B5928;
       color: #fff;
       border: none;
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
-    button:hover {
-      background-color: #0d47a1;
-    }
-
-    .upi-app-list {
-      list-style: none;
-      padding: 0;
-      margin: 20px 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-    }
-
-    .upi-app-list-item {
-      width: 45%;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .upi-pay-link {
-      text-decoration: none;
-      color: #333;
-      display: flex;
-      align-items: center;
-    }
-
-    .upi-app-logo {
-      margin-right: 10px;
-    }
-
-    .upi-app-logo img {
-      max-width: 30px;
-      max-height: 30px;
-    }
   </style>
 </head>
 <body>
-  <div class="payment-step" data-controller="checkout-payment">
-    <%# <fieldset class="payment-step__payment"> %>
-      <% if @order.covered_by_store_credit? %>
-        <p>Your order is fully covered by store credits, no additional payment method is required.</p>
-      <% else %>
-        <ul class="payment-step__selector">
-          <% default = "UPI" %>
-          <% fieldset_name = "upi-1" %>
-          <li>
-            <fieldset name="<%#= fieldset_name %>" class="payment-step__details">
-              <div class="container">
-                <h1>Select UPI Payment</h1>
-                <label for="upiId">Enter your UPI ID:</label>
-                <input type="text" id="upiId" placeholder="Enter UPI ID">
-                <button onclick="initiateRazorpay()">Initiate Payment</button>
-                <hr>
-                <ul class="upi-app-list" id="upiAppList">
-                  <li class="upi-app-list-item phonepe show">
-                    <a href="#" class="upi-pay-link">
-                      <div class="upi-app-logo">
-                        <img src="<%= image_path('phonepe-logo-icon.webp') %>" alt="PhonePe">
-                      </div>
-                      <span>PhonePe</span>
-                    </a>
-                  </li>
-                  <li class="upi-app-list-item gpay show">
-                    <a href="#" class="upi-pay-link">
-                      <div class="upi-app-logo">
-                        <img src="<%= image_path('gpay.png') %>" alt="Google Pay">
-                      </div>
-                      <span>Google Pay</span>
-                    </a>
-                  </li>
-                  <li class="upi-app-list-item gpay show">
-                    <a href="#" class="upi-pay-link">
-                      <div class="upi-app-logo">
-                        <img src="<%= image_path('paytm.png') %>" alt="Paytm Pay">
-                      </div>
-                      <span>Paytm</span>
-                    </a>
-                  </li>
-                  <li class="upi-app-list-item gpay show">
-                    <a href="#" class="upi-pay-link">
-                      <div class="upi-app-logo">
-                        <img src="<%= image_path('bhim.png') %>" alt="bhim Pay">
-                      </div>
-                      <span>BHIM</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </fieldset>
-          </li>
-        </ul>
-      <% end %>
-    <%# </fieldset> %>
+  <div class="container">
+    <label for="upiId">Enter your UPI ID:</label>
+    <input type="text" id="upiId" placeholder="Enter UPI ID">
+    <button onclick="initiateRazorpay(enableSaveAndContinue)">Initiate Payment</button>
+
+    <!-- Payment status will be displayed here -->
+    <div id="payment-status"></div>
   </div>
+
+  <input
+    type="hidden"
+    name="payment_source_id"
+    value="<%= payment_method.id %>"
+    data-solidus-stripe-payment-target="paymentMethodInput"
+  >
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var buttons = document.querySelectorAll('.razorpay-button');
+    var razorpayKey = 'rzp_test_452ST3VCdXCSSJ';
+    var paymentSuccessful = false;
 
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        var amount = this.getAttribute('data-amount');
-
-        var options = {
-          key: razorpayKey,
-          amount: amount,
-          currency: 'INR',
-          name: 'Your Company Name',
-          description: 'Subscription Payment',
-          image: 'path/to/your/logo.png',
-          prefill: {
-            contact: 'user_contact_number',
-            email: 'user_email@example.com'
-          },
-          theme: {
-            color: '#007BFF'
-          },
-          notes: {
-            // Add any additional notes if needed
-          },
-          display_options: {
-            card: 'none',        // Hide Card option
-            netbanking: 'none',  // Hide Netbanking option
-            wallet: 'none',      // Hide Wallet option
-            emi: 'none',         // Hide EMI option
-            upi: 'block'         // Show UPI option
-          }
-        };
-
-        var rzp = new Razorpay(options);
-
-        rzp.on('payment.success', function (response) {
-          // Successful payment response, now trigger the update action
-          handleSuccessfulPayment(response.razorpay_payment_id);
-        });
-
-        rzp.open();
-      });
-    });
-
-    function handleSuccessfulPayment(paymentId) {
+    function initiateRazorpay(callback) {
       var upiId = document.getElementById('upiId').value;
 
       if (!upiId) {
@@ -193,31 +68,52 @@
         return;
       }
 
-      // Make an AJAX request to your server to update the order with payment details
-      var xhr = new XMLHttpRequest();
-      xhr.open('PATCH', '/checkout/update/success', true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            var jsonResponse = JSON.parse(xhr.responseText);
-            if (jsonResponse.status === 'success') {
-              console.log('Order updated successfully.');
-              // Handle other success actions as needed
-            } else {
-              console.error('Failed to update order. Error:', jsonResponse.message);
-              // Handle error
-            }
-          } else {
-            console.error('Failed to update order. Server returned status:', xhr.status);
-            // Handle error
+      var options = {
+        key: razorpayKey,
+        amount: 1000,
+        currency: 'INR',
+        name: 'Your Company Name',
+        description: 'Payment for Order #123',
+        image: 'https://example.com/logo.png',
+        handler: function (response) {
+          handleSuccessfulPayment(response.razorpay_payment_id);
+          if (callback) {
+            callback(); // Call the callback function after successful payment
           }
-        }
+        },
+        prefill: {
+          email: 'customer@example.com',
+          contact: '9876543210',
+          upi_id: document.getElementById('upiId').value,
+        },
       };
 
-      var data = JSON.stringify({ razorpay_payment_id: paymentId, upi_id: upiId });
-      xhr.send(data);
+      var rzp = new Razorpay(options);
+      rzp.open();
     }
-  });
-</script>
+
+    function handleSuccessfulPayment(paymentId) {
+      var upiId = document.getElementById('upiId').value;
+
+      var paymentStatus = 'Payment successful. UPI ID: ' + upiId + ', Payment ID: ' + paymentId;
+
+      document.getElementById('payment-status').innerHTML = paymentStatus;
+
+      paymentSuccessful = true;
+
+      document.querySelector('button').disabled = true;
+    }
+
+    function enableSaveAndContinue() {
+      if (paymentSuccessful) {
+        document.getElementById('saveAndContinueButton').disabled = false;
+      } else {
+        alert('Please complete the payment first.');
+      }
+    }
+
+    // Disable the "Save and Continue" button initially
+    document.getElementById('saveAndContinueButton').disabled = true;
+  </script>
+</body>
+</html>

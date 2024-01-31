@@ -179,10 +179,10 @@
           <%= link_to "Subscribe Now" , user_susbscription_path, class: 'edit_button' %>
         <%else%>
           <% subscription = @user.subscriptions.last
-          plan = SolidusSubscriptions::SubscriptionPlan.find(subscription.subscription_plan_id)%>
+          plan = SolidusSubscriptions::SubscriptionPlan.find(subscription.subscription_plan_id) if subscription.subscription_plan_id.present? %>
           <h3>subscripton details</h3>
-          <p class="edit_title"><span>Title: <%=plan.title.titleize%></span></p>
-          <p class="edit_title"><span>Amount: <i class="fa fa-rupee" style="font-size:15px"></i> <%=plan.amount%></span></p>
+          <p class="edit_title"><span>Title: <%=plan.present? ? plan.title.titleize : ""%></span></p>
+          <p class="edit_title"><span>Amount: <i class="fa fa-rupee" style="font-size:15px"></i> <%=plan.present? ? plan.amount : ""%></span></p>
         <%end%>  
     </div>
   </div>

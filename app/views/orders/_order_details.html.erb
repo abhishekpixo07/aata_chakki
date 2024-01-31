@@ -24,8 +24,7 @@
 
     <% if order.has_checkout_step?("payment") %>
       <%= render(
-        'orders/payment_info',
-        order: order
+        'orders/payment_info/upi',
       ) %>
     <% end %>
   </div>

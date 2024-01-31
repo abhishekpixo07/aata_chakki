@@ -14,26 +14,65 @@ class CheckoutsController < CheckoutBaseController
   def update
     if update_order
       assign_temp_address
-        unless transition_forward
-          redirect_on_failure
-          return
-        end
-
-        if @order.completed?
-          finalize_order
-          # make_upi_payment_link_request
-        else
-          send_to_next_state
-        end
+  
+      unless transition_forward
+        redirect_on_failure
+        return
+      end
+  
+      case params[:state]
+      when 'payment'
+        handle_payment_state
+      else
+        # Handle other states as needed
+        send_to_next_state
+      end
+  
+      # Additional logic for 'success' state
+      handle_success_state if params[:state] == 'success'
     else
       render :edit
     end
-    if params[:state] == 'success'
-      update_order_with_payment_details
+  end
+  
+  private
+  
+  def handle_payment_state
+    wait_for_razorpay_response do
+      if @order.completed?
+        finalize_order_and_handle_payment
+      else
+        send_to_next_state
+      end
     end
   end
+  
+  def finalize_order_and_handle_payment
+    wait_for_razorpay_response do
+      finalize_order
+      # make_upi_payment_link_request
+    end
+  end
+  
+  def handle_success_state
+    update_order_with_payment_details
+  end
 
-  private
+  def wait_for_razorpay_response
+    # Use a loop to wait for the payment response (implement this logic based on your needs)
+    loop do
+      break if razorpay_payment_successful? # Implement this method to check if Razorpay payment is successful
+      sleep(1) # Sleep for a short duration before checking again
+    end
+  
+    yield if block_given? # Execute the block (e.g., finalize_order) after Razorpay payment is successful
+  end
+  
+  def razorpay_payment_successful?
+    # Implement the logic to check if Razorpay payment is successful
+    # For example, check a flag or status set by the Razorpay callback
+    @razorpay_payment_successful
+  end
 
   def update_order
     Spree::OrderUpdateAttributes.new(@order, update_params, request_env: request.headers.env).apply

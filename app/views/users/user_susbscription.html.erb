@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <!-- Add your Razorpay key -->
-  <script>
-    var razorpayKey = 'rzp_test_452ST3VCdXCSSJ'; // Replace with your actual Razorpay key
-  </script>
  <style>
  body {
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -131,9 +126,10 @@
 </body>
 </html>
 <!-- Razorpay payment script -->
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
- document.addEventListener('DOMContentLoaded', function () {
+  var razorpayKey = 'rzp_test_452ST3VCdXCSSJ'; // Replace with your actual Razorpay key
+  document.addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('.razorpay-button');
 
     buttons.forEach(function (button) {

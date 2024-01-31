@@ -42,12 +42,13 @@
           <li>
             <label>
               <%= radio_button_tag(
-                "order[payments_attributes][][payment_method_id]",
+                "order[payment_source_id]",
                 payment_method.id,
                 default,
                 'data-action': 'checkout-payment#paymentSelected',
                 'data-checkout-payment-target': "paymentRadio",
                 'data-fieldset-name': fieldset_name,
+                id: ","
               ) %>
               <%= t(payment_method.name, scope: 'spree.payment_method', default: payment_method.name) %>
             </label>
@@ -64,12 +65,15 @@
   </fieldset>
 
   <%= button_tag(
-    I18n.t("spree.save_and_continue"),
-    class: 'button-primary',
-    name: :commit
-  ) %>
+  I18n.t("spree.save_and_continue"),
+  class: 'button-success',
+  name: :commit,
+  id: 'saveAndContinueButton',
+  disabled: !@razorpay_payment_successful
+) %>
 </div>
 
 <script>
   Solidus.disableSaveOnClick();
 </script>
+
